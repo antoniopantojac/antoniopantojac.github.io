@@ -1,67 +1,152 @@
-<!- Por Antonio Pantoja C UNIGIS América Latina antoniopantojac@gmail.com ->
 <!DOCTYPE html>
-<html>
-    <head>
-
+<html><head><title>Visor geográfico UNIGIS/COPANDES</title>
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 
 
-        <title>Creating mash-ups with Leaflet</title>
-        <meta charset="utf-8" />
+   
+<script src="Ecuador.js" type="text/javascript"></script>
 
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        
+<style>
+	html {height: 100%;	margin: 0;}
 		
-		 <script src="Ecuador.js" type="text/javascript"></script>
+	#map {height: 460px;width: 60%;}
 	
+	.texto1 { float: left; height: 460px;width: 20%;margin-top: 0px;
+	  text-align: center;}
 	
-	    <style>
-            html, body {
-                height: 100%;
-                margin: 0;
-            }
-            #map {
-                width: 600px;
-                height: 400px;
-            }
-        </style>
-		
-    </head>
-    <body>
-        <div id='map'></div>
-		
-		
-		
-        <script>
-  
+	.texto2 { float: right; height: 460px; width: 20%; margin-top: 0px;
+	  text-align: center; }
+	
+ 	.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+   background-color: #000;
+    color:#fff;
+  text-align: center;
+}
 
-		var map = L.map('map').setView([-1.0682128, -80.2255177], 7);
-		var wmsLayer = L.tileLayer.wms('https://ows.mundialis.de/services/service?', {
-			layers: 'TOPO-OSM-WMS'
-		}).addTo(map);
+	@media only screen and (max-width: 620px) {
+	  /* For mobile phones: */
+	  .html, .map, .texto {
+		width: 100%;
+		background-color: #e5e5e5;
+	  }
+	}
+</style>
+</head> 
+<body style="font-family:Verdana;color:#aaaaaa;">
+	
+
+<div style="padding:20px;text-align:center;">
+  <h1>Visor geográfico UNIGIS/COPANDES</h1>
+</div>
+	
+
+	
+ <div class="texto1">   
+    <h2>UNIGIS América Latina</h2>
+    <p>
+	UNIGIS forma a profesionales de la región en Ciencias de la Geoinformación y Sistemas de Información Geográfica (SIG), a través de sus programas UNIGIS Professional (Especialización) y MSc GIS+ Maestría de Excelencia.
+	La Modalidad de estudio virtual y su calidad académica son respaldadas por la Universität Salzburg, Austria.
+	ver: <a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener">https://americalatina.unigis.net/</a>
+	</p>
+</div> 
+
+ <div class="texto2">   
+    <h2>COPANDES</h2>
+    <p>
+	Comunidad de intercambio de conocimientos para afrontar el cambio climático en los Andes
+	La comunidad virtual de práctica Andes (Copandes) es un espacio que propicia ambientes de discusión en torno al Cambio Climático (CC), la Variabilidad Climática y la afectación de estos fenómenos al recurso hídrico, los ecosistemas, el medio ambiente y los cultivos agrícolas. Con diversos actores de la sociedad civil, investigadores y tomadores de decisión, que comparten sus experiencias e inquietudes frente al tema del CC y las metodologías existentes para abordar este fenómeno.
+	ver: <a href="https://www.copandes.org/" target="_blank" rel="noreferrer noopener">https://www.copandes.org/</a>
+	</p>
+</div> 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
+	
+<div id='map'></div>
+
+<script src="location.js" type="text/javascript"></script>
+
+
+
+<p id="demo"></p>
+
+		
+		
+		<script> 		
+
+		function onLocationFound(e) {
+		const radius = e.accuracy / 2;
+		const locationMarker = L.marker(e.latlng).addTo(map)
+			.bindPopup(`You are within ${radius} meters from this point`).openPopup();
+
+		const locationCircle = L.circle(e.latlng, radius).addTo(map);
+		}
+		function onLocationError(e) {
+			alert(e.message);
+		}
+		//map.on('locationfound', onLocationFound);
+		//map.on('locationerror', onLocationError);
+
+		//map.locate({setView: true, maxZoom: 16})
+		
+	
+		
+		var map = L.map('map').setView([-1.0682128, -80.2255177], 2);	
+				
+		var wmsLayer1 = L.tileLayer.wms('https://ows.mundialis.de/services/service?', {
+			layers: ['TOPO-OSM-WMS']});		
+		var wmsLayer2 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+			
+		
+		
+		////////////////////////////////
+		
+		// Añadimos la capa de Ecuador
+								L.geoJson(Linea).addTo(map)
+								function getColorStyle(feature) {
+										return {
+										'weight': 4, // grosor de línea
+										'color': "#fffffs",// color de linea
+										'stroke':0.2, 
+										'opacity':10,
+										'dashArray':'5, 5, 1, 5'
+										};
+														}
+												var Linea = new L.geoJson(Ecuador, {
+												style: getColorStyle,
+												}).addTo(map);
+		
+		/////////////////////
 		
 		
 		
-	/*var parks = L.esri.featureLayer({source:"Ecuador.shp",style: function () {return { color: "#70ca49", weight: 1 };}}).addTo(map);
-	*/
+		
+		 		
+    
+	</script>
+	
+<script>
+//////// Control de capas
+var baseMaps = {"Relieve": wmsLayer1,"Calles": wmsLayer2 };
+var overlayMaps = {"Ecu": Linea };
+							
+L.control.layers(baseMaps,overlayMaps ).addTo(map);
 
- 
- // Load js 
- 
-   L.geoJson(Ecuador, {
-            style: function (feature) {
-                return feature.properties && feature.properties.style;
-            }
-        }).addTo(map);
+</script>						
 
+ <div class="footer">  
 
-
- 
- 
- 
- 
-        </script>
+ © copyright: 
+ @AntonioPantojaC
+ <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener"> Twitter</a>
+<a href="https://www.linkedin.com/in/antoniopantojacueltan/" target="_blank" rel="noreferrer noopener"> LinkedIn</a>
+</div>
+		
     </body>
 </html>
