@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html><head><title>Visor geográfico UNIGIS/COPANDES</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+
+   
+<script src="Ecuador.js" type="text/javascript"></script>
+
+<style>
+	
+	body {
+        padding: 0;
+        margin: 0;
+    }
+    html, body, #map {
+        height: 96%;
+        width: 100%;
+    }
+	
+	
+	
+	
+ 	.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+   
+    color:#C0381B;
+  text-align: center;
+  overflow: visible ;
+   background-color: #FFF; color: #000; }
+h1, h2, h3, h4, h5, h6 { color: #C00; }
+}
+
+
+@media (max-width: 700px) {
+    .container {
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+
+	
+</style>
+</head> 
+<body style="font-family:Verdana;color:#aaaaaa;">
+	
+
+ 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
+	
+<div id='map'></div>
+
+<script src="location.js" type="text/javascript"></script>
+
+
+
+<p id="demo"></p>
+
+		
+		
+		<script> 		
+
+		function onLocationFound(e) {
+		const radius = e.accuracy / 2;
+		const locationMarker = L.marker(e.latlng).addTo(map)
+			.bindPopup(`You are within ${radius} meters from this point`).openPopup();
+
+		const locationCircle = L.circle(e.latlng, radius).addTo(map);
+		}
+		function onLocationError(e) {
+			alert(e.message);
+		}
+		//map.on('locationfound', onLocationFound);
+		//map.on('locationerror', onLocationError);
+
+		//map.locate({setView: true, maxZoom: 16})
+		
+	
+		
+		var map = L.map('map').setView([-1.0682128, -80.2255177], 7);	
+				
+		var wmsLayer1 = L.tileLayer.wms('https://ows.mundialis.de/services/service?', {
+			layers: ['TOPO-OSM-WMS']});		
+		var wmsLayer2 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+			
+		
+		
+		////////////////////////////////
+		
+		// Añadimos la capa de Ecuador
+								L.geoJson(Linea).addTo(map)
+								function getColorStyle(feature) {
+										return {
+										'weight': 4, // grosor de línea
+										'color': "#fffffs",// color de linea
+										'stroke':0.2, 
+										'opacity':10,
+										'dashArray':'5, 5, 1, 5'
+										};
+														}
+												var Linea = new L.geoJson(Ecuador, {
+												style: getColorStyle,
+												}).addTo(map);
+		
+		/////////////////////
+		
+		
+		
+		
+					    
+    
+	</script>
+	
+<script>
+//////// Control de capas
+var baseMaps = {"Relieve": wmsLayer1,"Calles": wmsLayer2 };
+var overlayMaps = {"Ecu": Linea };
+							
+L.control.layers(baseMaps,overlayMaps ).addTo(map);
+
+</script>	
+
+
+<p id="demo"></p>
+
+
+<script>
+////////////////////////////////////
+var x = document.getElementById("demo");
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}    
+function showPosition(position) {
+    x.innerHTML="Latitude: " + position.coords.latitude + 
+    "<br>Longitude: " + position.coords.longitude;
+}
+////////////////////////////////////
+</script>
+				
+
+ <div class="footer">  
+<button onclick="getLocation()">Try It</button>
+ © copyright:  @AntonioPantojaC <br>
+ <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener"> Twitter  | </a>
+<a href="https://www.linkedin.com/in/antoniopantojacueltan/" target="_blank" rel="noreferrer noopener"> LinkedIn</a>
+
+<br>
+
+<a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener"> UNIGIS América Latina  |</a>
+<a href="http://www.copandes.org/" target="_blank" rel="noreferrer noopener">  COPANDES </a>
+
+
+</div>
+		
+    </body>
+</html>
