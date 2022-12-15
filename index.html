@@ -10,15 +10,18 @@
 <script src="Ecuador.js" type="text/javascript"></script>
 
 <style>
-	html {height: 100%;	margin: 0;}
-		
-	#map {height: 460px;width: 60%;}
 	
-	.texto1 { float: left; height: 460px;width: 20%;margin-top: 0px;
-	  text-align: center;}
+	body {
+        padding: 0;
+        margin: 0;
+    }
+    html, body, #map {
+        height: 98%;
+        width: 100%;
+    }
 	
-	.texto2 { float: right; height: 460px; width: 20%; margin-top: 0px;
-	  text-align: center; }
+	
+	
 	
  	.footer {
   position: fixed;
@@ -26,45 +29,27 @@
   bottom: 0;
   width: 100%;
    background-color: #000;
-    color:#fff;
+    color:#C0381B;
   text-align: center;
+  overflow: visible ;
 }
 
-	@media only screen and (max-width: 620px) {
-	  /* For mobile phones: */
-	  .html, .map, .texto {
-		width: 100%;
-		background-color: #e5e5e5;
-	  }
-	}
+
+@media (max-width: 700px) {
+    .container {
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+
+	
 </style>
 </head> 
 <body style="font-family:Verdana;color:#aaaaaa;">
 	
 
-<div style="padding:20px;text-align:center;">
-  <h1>Visor geográfico UNIGIS/COPANDES</h1>
-</div>
-	
-
-	
- <div class="texto1">   
-    <h2>UNIGIS América Latina</h2>
-    <p>
-	UNIGIS forma a profesionales de la región en Ciencias de la Geoinformación y Sistemas de Información Geográfica (SIG), a través de sus programas UNIGIS Professional (Especialización) y MSc GIS+ Maestría de Excelencia.
-	La Modalidad de estudio virtual y su calidad académica son respaldadas por la Universität Salzburg, Austria.
-	ver: <a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener">https://americalatina.unigis.net/</a>
-	</p>
-</div> 
-
- <div class="texto2">   
-    <h2>COPANDES</h2>
-    <p>
-	Comunidad de intercambio de conocimientos para afrontar el cambio climático en los Andes
-	La comunidad virtual de práctica Andes (Copandes) es un espacio que propicia ambientes de discusión en torno al Cambio Climático (CC), la Variabilidad Climática y la afectación de estos fenómenos al recurso hídrico, los ecosistemas, el medio ambiente y los cultivos agrícolas. Con diversos actores de la sociedad civil, investigadores y tomadores de decisión, que comparten sus experiencias e inquietudes frente al tema del CC y las metodologías existentes para abordar este fenómeno.
-	ver: <a href="https://www.copandes.org/" target="_blank" rel="noreferrer noopener">https://www.copandes.org/</a>
-	</p>
-</div> 
+ 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
 	
@@ -97,7 +82,7 @@
 		
 	
 		
-		var map = L.map('map').setView([-1.0682128, -80.2255177], 2);	
+		var map = L.map('map').setView([-1.0682128, -80.2255177], 7);	
 				
 		var wmsLayer1 = L.tileLayer.wms('https://ows.mundialis.de/services/service?', {
 			layers: ['TOPO-OSM-WMS']});		
@@ -127,7 +112,7 @@
 		
 		
 		
-		 		
+					    
     
 	</script>
 	
@@ -142,10 +127,16 @@ L.control.layers(baseMaps,overlayMaps ).addTo(map);
 
  <div class="footer">  
 
- © copyright: 
- @AntonioPantojaC
- <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener"> Twitter</a>
+ © copyright:  @AntonioPantojaC
+ <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener"> Twitter  | </a>
 <a href="https://www.linkedin.com/in/antoniopantojacueltan/" target="_blank" rel="noreferrer noopener"> LinkedIn</a>
+
+<br>
+
+<a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener"> UNIGIS América Latina  |</a>
+<a href="http://www.copandes.org/" target="_blank" rel="noreferrer noopener">  COPANDES </a>
+
+
 </div>
 		
     </body>
