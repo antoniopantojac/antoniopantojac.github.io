@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Descarga de modelo digital de elevación</title>
+</head>
+<body>
+  <h1>Descarga de modelo digital de elevación</h1>
+  <form>
+    <label for="municipality">Municipio:</label>
+    <input type="text" id="municipality" name="municipality">
+    <button type="submit">Descargar</button>
+  </form>
+  <script src="https://apis.google.com/js/api.js"></script>
+  <script>
+    // Inicializar la API de Google Earth Engine
+    gapi.load("client", function() {
+      gapi.client.init({
+        "apiKey": "API_KEY",
+        "discoveryDocs": ["https://earthengine.googleapis.com/$discovery/rest?version=v1"]
+      }).then(function() {
+        // Realizar una petición a la API de Google Earth Engine para descargar el DEM
+        // para el municipio especificado
+        const form = document.querySelector('form');
+        form.addEventListener('submit', event => {
+          event.preventDefault();
+          const municipality = form.elements.municipality.value;
+          gapi.client.earthengine.dem.search({
+            "municipality": municipality
+          }).then(function(response) {
+            const dem = response.result;
+            // Descargar el modelo digital de elevación (DEM)
+          }, function(reason) {
+            console.error("Error: " + reason.result.error.message);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
