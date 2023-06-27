@@ -50,15 +50,14 @@
         // Crear y configurar el mapa
         var map = L.map('map').setView([0.7682128, -77.2255177], 11);
 
-        // Capas base
+        // Capas base        
         
-        var wmsLayer2 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
-		
 		var googleSatelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
 			attribution: 'Map data &copy; Google'
-		});
-
+		}).addTo(map);
 		
+		var Calles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+				
 		var googleLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
 		attribution: 'Map data &copy; Google'
 		});
@@ -96,10 +95,10 @@
         });
 
         // Control de capas
-        var baseMaps = {            
-            "Calles": wmsLayer2,
-			"googleL" :googleLayer,
-			"googleSatellite": googleSatelliteLayer,
+        var baseMaps = {
+			"googleSatellite": googleSatelliteLayer,		
+            "Calles": Calles,
+			"googleL" :googleLayer,			
 			"arcgisWorldImagery": arcgisWorldImageryLayer
 
         };
