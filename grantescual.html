@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visor geográfico UNIGIS/COPANDES</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 96%;
+            width: 100%;
+        }
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            color: #C0381B;
+            text-align: center;
+            overflow: visible;
+            background-color: #FFF;
+            color: #000;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #C00;
+        }
+        @media (max-width: 700px) {
+            .container {
+                width: 100%;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+    <div id='map'></div>
+    <p id="demo"></p>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="location.js" type="text/javascript"></script>
+    <script src="grantescual.js" type="text/javascript"></script>
+
+    <script>
+        // Crear y configurar el mapa
+        var map = L.map('map').setView([0.7682128, -77.2255177], 11);
+
+        // Capas base
+        
+        var wmsLayer2 = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(map);
+		
+		var googleSatelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+			attribution: 'Map data &copy; Google'
+		});
+
+		
+		var googleLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+		attribution: 'Map data &copy; Google'
+		});
+
+		var arcgisWorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+			attribution: 'Map data &copy; Esri'
+		});
+
+
+			// Función para obtener el estilo de línea
+			function getColorStyle(feature) {
+				return {
+					weight: 4, // grosor de línea
+					color: '#ffff00', // color de línea (amarillo)
+					opacity: 1, // opacidad de la línea
+					fillOpacity: 0, // opacidad del relleno (transparente)
+					dashArray: '5, 5, 1, 5' // patrón de línea punteada
+				};
+			}
+
+
+        // Capa de grantescual
+        var Linea = new L.geoJson(grantescual, {
+            style: getColorStyle
+        }).addTo(map);
+
+        // Carga el archivo GeoJSON mediante AJAX
+        $.ajax({
+            url: 'https://www.googleapis.com/bigquery/v2/projects/sigeti/datasets/unidades_de_analisis/tables/comunidades_censo632?alt=json&access_token=[ACCESS_TOKEN]',
+            dataType: 'json',
+            success: function (data) {
+                // Crea una capa GeoJSON y agrega los datos
+                L.geoJSON(data).addTo(map);
+            }
+        });
+
+        // Control de capas
+        var baseMaps = {            
+            "Calles": wmsLayer2,
+			"googleL" :googleLayer,
+			"googleSatellite": googleSatelliteLayer,
+			"arcgisWorldImagery": arcgisWorldImageryLayer
+
+        };
+        var overlayMaps = {
+            "Ecu": Linea
+        };
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+    </script>
+
+    <div class="footer">
+        © copyright: @AntonioPantojaC <br>
+        <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener">Twitter |</a>
+        <a href="https://www.linkedin.com/in/antoniopantojacueltan/" target="_blank" rel="noreferrer noopener">LinkedIn</a><br>
+        <a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener">UNIGIS América Latina |</a>
+        <a href="http://www.copandes.org/" target="_blank" rel="noreferrer noopener">COPANDES</a>
+    </div>
+</body>
+</html>
