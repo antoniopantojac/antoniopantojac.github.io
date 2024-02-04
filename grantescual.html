@@ -45,6 +45,7 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <script src="location.js" type="text/javascript"></script>
     <script src="grantescual.js" type="text/javascript"></script>
+	<script src="perdida_bosquq_puerres.js" type="text/javascript"></script>
 
     <script>
         // Crear y configurar el mapa
@@ -83,6 +84,13 @@
         var Linea = new L.geoJson(grantescual, {
             style: getColorStyle
         }).addTo(map);
+		
+		
+		
+		        // Capa de perdida_bosquq_puerres
+        var Linea = new L.geoJson(perdida_bosquq_puerres, {
+            style: getColorStyle
+        }).addTo(map);
 
         // Carga el archivo GeoJSON mediante AJAX
         $.ajax({
@@ -104,6 +112,8 @@
         };
         var overlayMaps = {
             "Gran Tescual": Linea
+			"Pérdida de bosque": Linea
+			
         };
         L.control.layers(baseMaps, overlayMaps).addTo(map);
     </script>
