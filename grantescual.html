@@ -42,79 +42,77 @@
     <p id="demo"></p>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMT..." crossorigin=""></script>
     <script src="location.js" type="text/javascript"></script>
     <script src="grantescual.js" type="text/javascript"></script>
-	<script src="perdida_bosquq_puerres.js" type="text/javascript"></script>
+    <script src="perdida_bosquq_puerres.js" type="text/javascript"></script>
 
     <script>
-        // Crear y configurar el mapa
         var map = L.map('map').setView([0.7682128, -77.30], 10);
 
-        // Capas base        
-        
-		var googleSatelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-			attribution: 'Map data &copy; Google'
-		}).addTo(map);
-		
-		var Calles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
-				
-		var googleLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
-		attribution: 'Map data &copy; Google'
-		});
+        var arcgisWorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Map data &copy; Esri'
+        }).addTo(map);    
 
-		var arcgisWorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-			attribution: 'Map data &copy; Esri'
-		});
+	   var googleSatelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            attribution: 'Map data &copy; Google'
+        });
 
+        var Calles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
 
-			// Función para obtener el estilo de línea
-			function getColorStyle(feature) {
-				return {
-					weight: 4, // grosor de línea
-					color: '#ffff00', // color de línea (amarillo)
-					opacity: 1, // opacidad de la línea
-					fillOpacity: 0, // opacidad del relleno (transparente)
-					dashArray: '5, 5, 1, 5' // patrón de línea punteada
-				};
-			}
+        var googleLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+            attribution: 'Map data &copy; Google'
+        });
 
+        function getColorStyle(feature) {
+            return {
+                weight: 4,
+                color: '#ffff00',
+                opacity: 1,
+                fillOpacity: 0,
+                dashArray: '5, 5, 1, 5'
+            };
+        }
 
-        // Capa de grantescual
+        function getColorStyle2(feature) {
+            return {
+                weight: 4,
+                color: '#FF0000',
+                opacity: 1,
+                fillOpacity: 0,
+                dashArray: '5, 5, 1, 5'
+            };
+        }
+
         var Linea = new L.geoJson(grantescual, {
             style: getColorStyle
         }).addTo(map);
-		
-		
-		
-		        // Capa de perdida_bosquq_puerres
-        var Linea = new L.geoJson(perdida_bosquq_puerres, {
-            style: getColorStyle
+
+        var Linea1 = new L.geoJson(perdida_bosquq_puerres, {
+            style: getColorStyle2
         }).addTo(map);
 
-        // Carga el archivo GeoJSON mediante AJAX
         $.ajax({
             url: 'https://www.googleapis.com/bigquery/v2/projects/sigeti/datasets/unidades_de_analisis/tables/comunidades_censo632?alt=json&access_token=[ACCESS_TOKEN]',
             dataType: 'json',
             success: function (data) {
-                // Crea una capa GeoJSON y agrega los datos
                 L.geoJSON(data).addTo(map);
             }
         });
 
-        // Control de capas
         var baseMaps = {
-			"googleSatellite": googleSatelliteLayer,		
+			"arcgisWorldImagery": arcgisWorldImageryLayer,
+            "googleSatellite": googleSatelliteLayer,
             "Calles": Calles,
-			"googleL" :googleLayer,			
-			"arcgisWorldImagery": arcgisWorldImageryLayer
+            "googleL": googleLayer
+            
+        };
 
-        };
         var overlayMaps = {
-            "Gran Tescual": Linea
-			"Pérdida de bosque": Linea
-			
+            "Gran Tescual": Linea,
+            "Pérdida de bosque - Puerres": Linea1
         };
+
         L.control.layers(baseMaps, overlayMaps).addTo(map);
     </script>
 
@@ -123,7 +121,4 @@
         <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener">Twitter |</a>
         <a href="https://www.linkedin.com/in/antoniopantojac/" target="_blank" rel="noreferrer noopener">LinkedIn</a><br>
         <a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener">UNIGIS América Latina |</a>
-        <a href="http://www.copandes.org/" target="_blank" rel="noreferrer noopener">COPANDES</a>
-    </div>
-</body>
-</html>
+        <a href="
