@@ -35,6 +35,13 @@
             font-size: 12px;
             color: #C0381B;
         }
+        .legend-item {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
         @media (max-width: 700px) {
             .container {
                 width: 100%;
@@ -137,10 +144,10 @@
         });
 
         var overlayMaps = {
-            "Ya adjudicados a Gran Tescual": grantescual,            
-            "Ampliación Orito": globo3,
-            "Ampliación zona intermedia": poligono4_uniondospoligonos,
-            //"Pérdida de bosque - Puerres": Linea1
+            '<i class="legend-item" style="background: #7DDA58"></i>Ya adjudicados a Gran Tescual': grantescual,            
+            '<i class="legend-item" style="background: #FD5238"></i>Ampliación Orito': globo3,
+            '<i class="legend-item" style="background: #FD5238"></i>Ampliación zona intermedia': poligono4_uniondospoligonos,
+            //'<i class="legend-item" style="background: #FF0000"></i>Pérdida de bosque - Puerres': Linea1
         };
 
         var baseMaps = {
@@ -153,23 +160,21 @@
         googleSatelliteLayer.addTo(map); // Añadir la capa de imagen del mundo como capa base por defecto
         globo3.addTo(map); // Añadir la capa "Globo 3" como capa superpuesta por defecto
         poligono4_uniondospoligonos.addTo(map);
-	grantescual.addTo(map);
+        grantescual.addTo(map);
 
         L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
-
     </script>
 
     <div class="footer">
         <div class="footer-top">
-		  DESCARGAR ->  <a href="https://plusacat-my.sharepoint.com/:f:/g/personal/antonio_pantoja_plus_ac_at/EqahzHnlBulGuZc9BDBs9GoBvjV5is366QhFrHG66I-f2w?e=SJ0CQB" target="_blank" rel="noreferrer noopener">Mapas PDF/imagen |</a>
-		    <a href="https://plusacat-my.sharepoint.com/:f:/g/personal/antonio_pantoja_plus_ac_at/EqmJZNCgUApHvSaVJO6SPpsB4NLGmgJv3gKkNGxWnVjoiQ?e=QYIEGh" target="_blank" rel="noreferrer noopener">Capas vectoriales </a>
-			
+            DESCARGAR -> <a href="https://plusacat-my.sharepoint.com/:f:/g/personal/antonio_pantoja_plus_ac_at/EqahzHnlBulGuZc9BDBs9GoBvjV5is366QhFrHG66I-f2w?e=SJ0CQB" target="_blank" rel="noreferrer noopener">Mapas PDF/imagen |</a>
+            <a href="https://plusacat-my.sharepoint.com/:f:/g/personal/antonio_pantoja_plus_ac_at/EqmJZNCgUApHvSaVJO6SPpsB4NLGmgJv3gKkNGxWnVjoiQ?e=QYIEGh" target="_blank" rel="noreferrer noopener">Capas vectoriales</a>
         </div>
         <div class="footer-bottom">
-            © copyright: @AntonioPantojaC    -  antoniopantojac@gmail.com<br>
-            <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener">Twitter   |</a>
-            <a href="https://www.linkedin.com/in/antoniopantojac/" target="_blank" rel="noreferrer noopener">LinkedIn   |</a>
-            <a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener">UNIGIS América Latina   |</a>
+            © copyright: @AntonioPantojaC - antoniopantojac@gmail.com<br>
+            <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener">Twitter |</a>
+            <a href="https://www.linkedin.com/in/antoniopantojac/" target="_blank" rel="noreferrer noopener">LinkedIn |</a>
+            <a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener">UNIGIS América Latina |</a>
             <a href="https://copandes.org/" target="_blank" rel="noreferrer noopener">COPANDES</a>
         </div>
     </div>
