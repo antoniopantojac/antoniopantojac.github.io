@@ -137,9 +137,9 @@
         });
 
         var overlayMaps = {
-            "Ya adjudicados": grantescual,            
-            "En proceso Orito": globo3,
-            "En proceso Unión Polig actuales": poligono4_uniondospoligonos,
+            "Ya adjudicados a Gran Tescual": grantescual,            
+            "Ampliación Orito": globo3,
+            "Ampliación zona intermedia": poligono4_uniondospoligonos,
             //"Pérdida de bosque - Puerres": Linea1
         };
 
@@ -152,8 +152,8 @@
 
         googleSatelliteLayer.addTo(map); // Añadir la capa de imagen del mundo como capa base por defecto
         globo3.addTo(map); // Añadir la capa "Globo 3" como capa superpuesta por defecto
-        grantescual.addTo(map);
         poligono4_uniondospoligonos.addTo(map);
+		// grantescual.addTo(map);
 
         L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 
