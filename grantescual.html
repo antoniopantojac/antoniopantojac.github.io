@@ -47,6 +47,7 @@
     <script src="grantescual.js" type="text/javascript"></script>
     <script src="perdida_bosquq_puerres.js" type="text/javascript"></script>
     <script src="globo3.js" type="text/javascript"></script>
+    <script src="poligono4_uniondospoligonos.js" type="text/javascript"></script>
 
 
 
@@ -110,7 +111,7 @@
 
 
 
-        var Linea = new L.geoJson(grantescual, {
+        var grantescual = new L.geoJson(grantescual, {
             style: getColorStyle
         });
 
@@ -118,7 +119,11 @@
             style: getColorStyle2
         });
 
-        var Linea2 = new L.geoJson(globo3, {
+        var globo3 = new L.geoJson(globo3, {
+            style: getColorStyle3
+        }); 
+
+		var poligono4_uniondospoligonos = new L.geoJson(poligono4_uniondospoligonos, {
             style: getColorStyle3
         });        
 		
@@ -135,9 +140,10 @@
 
 
         var overlayMaps = {
-            "Ya adjudicados": Linea,            
-            "En proceso": Linea2,
-			"Pérdida de bosque - Puerres": Linea1
+            "Ya adjudicados": grantescual,            
+            "En proceso Orito": globo3,
+			"En proceso Unión Polig actuales": poligono4_uniondospoligonos,
+			//"Pérdida de bosque - Puerres": Linea1
         };
 
         var baseMaps = {
@@ -148,9 +154,10 @@
         };
 
         googleSatelliteLayer.addTo(map); // Añadir la capa de imagen del mundo como capa base por defecto
-        Linea2.addTo(map); // Añadir la capa "Globo 3" como capa superpuesta por defecto
-		Linea.addTo(map);
-		//Linea3.addTo(map);
+        globo3.addTo(map); // Añadir la capa "Globo 3" como capa superpuesta por defecto
+		grantescual.addTo(map);
+		poligono4_uniondospoligonos.addTo(map);
+		
 		
 
         L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
