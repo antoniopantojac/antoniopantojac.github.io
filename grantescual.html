@@ -85,7 +85,6 @@
                 color: '#7DDA58',
                 opacity: 1,
                 fillOpacity: 0,
-                dashArray: '5, 5, 1, 5'
             };
         }
 
@@ -101,7 +100,7 @@
 
         function getColorStyle3(feature) {
             return {
-                weight: 0.5,
+                weight: 0.8,
                 color: '#FD5238',
                 opacity: 1,
                 fillOpacity: 0,
@@ -109,15 +108,6 @@
             };
         }
         
-        function getColorStyle4(feature) {
-            return {
-                weight: 0.1,
-                color: '#CECECE',
-                opacity: 1,
-                fillOpacity: 0,
-                dashArray: '5, 5, 1, 5'
-            };
-        }
 
         var grantescual = new L.geoJson(grantescual, {
             style: getColorStyle
