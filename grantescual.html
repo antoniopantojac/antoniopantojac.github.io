@@ -57,10 +57,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMT..." crossorigin=""></script>
     <script src="location.js" type="text/javascript"></script>
-    <script src="grantescual.js" type="text/javascript"></script>
-    <script src="perdida_bosquq_puerres.js" type="text/javascript"></script>
-    <script src="globo3.js" type="text/javascript"></script>
-    <script src="poligono4_uniondospoligonos.js" type="text/javascript"></script>
+    <script src="ya_adjudicados_antesde2024.js" type="text/javascript"></script>
+    <script src="perdida_bosque_puerres.js" type="text/javascript"></script>
+    <script src="solicitud_orito.js" type="text/javascript"></script>
+    <script src="solicitud_poligono_intermedio.js" type="text/javascript"></script>
 
     <script>
         var map = L.map('map').setView([0.7682128, -77.24], 10);
@@ -79,29 +79,29 @@
             attribution: 'Map data &copy; Google'
         });
 
-        function getColorStyle(feature) {
+        function getColorStyleVerde(feature) {
             return {
                 weight: 4,
-                color: '#7DDA58',
+                color: '#7DDA58', // Verde
                 opacity: 1,
                 fillOpacity: 0,
             };
         }
 
-        function getColorStyle2(feature) {
+        function getColorStyleAmarillo(feature) {
             return {
-                weight: 4,
-                color: '#FF0000',
+                weight: 0.8,
+                color: '#FFFF00',  // Amarillo
                 opacity: 1,
                 fillOpacity: 0,
                 dashArray: '5, 5, 1, 5'
             };
         }
 
-        function getColorStyle3(feature) {
+        function getColorStyleMoradoRojo(feature) {
             return {
-                weight: 0.8,
-                color: '#FD5238',
+                weight: 4,
+                color: '#FF0000',  // Rojo
                 opacity: 1,
                 fillOpacity: 0,
                 dashArray: '5, 5, 1, 5'
@@ -109,20 +109,20 @@
         }
         
 
-        var grantescual = new L.geoJson(grantescual, {
-            style: getColorStyle
+        var ya_adjudicados_antesde2024 = new L.geoJson(ya_adjudicados_antesde2024, {
+            style: getColorStyleVerde
         });
 
-        var Linea1 = new L.geoJson(perdida_bosquq_puerres, {
-            style: getColorStyle2
+        var perdida_bosque_puerres = new L.geoJson(perdida_bosque_puerres, {
+            style: getColorStyleMoradoRojo 
         });
 
-        var globo3 = new L.geoJson(globo3, {
-            style: getColorStyle3
+        var solicitud_orito = new L.geoJson(solicitud_orito, {
+            style: getColorStyleAmarillo
         }); 
 
-        var poligono4_uniondospoligonos = new L.geoJson(poligono4_uniondospoligonos, {
-            style: getColorStyle3
+        var solicitud_poligono_intermedio = new L.geoJson(solicitud_poligono_intermedio, {
+            style: getColorStyleAmarillo
         });        
 
         $.ajax({
@@ -134,10 +134,11 @@
         });
 
         var overlayMaps = {
-            '<i class="legend-item" style="background: #7DDA58"></i>Ya adjudicados a Gran Tescual': grantescual,            
-            '<i class="legend-item" style="background: #FD5238"></i>Ampliación Orito (en proceso)': globo3,
-            '<i class="legend-item" style="background: #FD5238"></i>Ampliación Z. intermedia (en proceso)': poligono4_uniondospoligonos,
-            //'<i class="legend-item" style="background: #FF0000"></i>Pérdida de bosque - Puerres': Linea1
+            '<i class="legend-item" style="background: #7DDA58"></i>Ya adjudicados a Gran Tescual': ya_adjudicados_antesde2024,            
+            '<i class="legend-item" style="background: #FF0000"></i>Pérdida de bosque - Puerres': perdida_bosque_puerres,
+			'<i class="legend-item" style="background: #FFFF00"></i>Ampliación Orito (en proceso)': solicitud_orito,
+            '<i class="legend-item" style="background: #FFFF00"></i>Ampliación Z. intermedia (en proceso)': solicitud_poligono_intermedio,
+            
         };
 
         var baseMaps = {
@@ -148,9 +149,10 @@
         };
 
         googleSatelliteLayer.addTo(map); // Añadir la capa de imagen del mundo como capa base por defecto
-        // globo3.addTo(map);  Añadir la capa "Globo 3" como capa superpuesta por defecto
-        //poligono4_uniondospoligonos.addTo(map);
-        grantescual.addTo(map);
+        ya_adjudicados_antesde2024.addTo(map); // Añadir la capa de zonas adjudicadas por defecto
+		perdida_bosque_puerres.addTo(map); // Añadir la capa perdida_bosque_puerres por defecto
+        // solicitud_orito.addTo(map);  Añadir la capa "Globo 3" como capa superpuesta por defecto
+        //solicitud_poligono_intermedio.addTo(map);
 
         L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
     </script>
