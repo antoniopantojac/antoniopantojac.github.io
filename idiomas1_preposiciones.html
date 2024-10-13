@@ -26,7 +26,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .exercise {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .feedback {
             font-weight: bold;
@@ -45,92 +45,79 @@
 <div class="content">
     <h1>Temas de Inglés Interactivos</h1>
 
-    <h2>Prepositions of Time, Place, and Movement / Preposiciones de tiempo, lugar y movimiento</h2>
-    <p>Las preposiciones se usan para conectar palabras en una oración, indicando relaciones de tiempo, lugar o movimiento.</p>
-    <ul>
-        <li>I arrive <strong>at</strong> 8 PM.</li>
-        <li>The keys are <strong>on</strong> the desk.</li>
-        <li>She jumped <strong>into</strong> the pool.</li>
-    </ul>
-    <div class="exercise">
-        <label>We arrived ___ (on/at/in) Monday:
-            <input type="text" id="preposition1">
-        </label>
-        <button onclick="checkAnswer('preposition1', 'on')">Comprobar</button>
-        <div id="feedback1" class="feedback"></div>
-    </div>
-
-    <h2>State Verbs / Verbos de Estado</h2>
-    <p>Los verbos de estado describen pensamientos, sentimientos, posesión o percepción, y no suelen usarse en tiempos continuos.</p>
-    <ul>
-        <li>I <strong>love</strong> pizza.</li>
-        <li>She <strong>believes</strong> in magic.</li>
-        <li>They <strong>have</strong> a new apartment.</li>
-    </ul>
-    <div class="exercise">
-        <label>He ___ (believe) in ghosts:
-            <input type="text" id="stateVerb1">
-        </label>
-        <button onclick="checkAnswer('stateVerb1', 'believes')">Comprobar</button>
-        <div id="feedback2" class="feedback"></div>
-    </div>
-
-    <h2>Present Simple / Presente Simple</h2>
-    <p>El presente simple se usa para expresar hábitos, hechos generales y verdades universales.</p>
-    <ul>
-        <li>I <strong>wake</strong> up at 7 AM.</li>
-        <li>She <strong>works</strong> in an office.</li>
-        <li>They <strong>play</strong> football on weekends.</li>
-    </ul>
-    <div class="exercise">
-        <label>They ___ (play) tennis on Saturdays:
-            <input type="text" id="presentSimple1">
-        </label>
-        <button onclick="checkAnswer('presentSimple1', 'play')">Comprobar</button>
-        <div id="feedback3" class="feedback"></div>
-    </div>
-
-    <h2>Present Continuous / Presente Continuo</h2>
-    <p>El presente continuo describe acciones que están ocurriendo ahora o que ocurrirán en un futuro cercano.</p>
-    <ul>
-        <li>I <strong>am reading</strong> a book right now.</li>
-        <li>She <strong>is working</strong> on a new project.</li>
-    </ul>
-    <div class="exercise">
-        <label>He ___ (watch) TV now:
-            <input type="text" id="presentContinuous1">
-        </label>
-        <button onclick="checkAnswer('presentContinuous1', 'is watching')">Comprobar</button>
-        <div id="feedback4" class="feedback"></div>
-    </div>
-
     <h2>Used to / Solía</h2>
     <p>Se usa <strong>used to</strong> para describir hábitos o situaciones en el pasado que ya no ocurren.</p>
     <ul>
         <li>I <strong>used to</strong> live in London.</li>
         <li>She <strong>used to</strong> play the piano.</li>
+        <li>They <strong>used to</strong> go fishing every summer.</li>
     </ul>
     <div class="exercise">
         <label>He ___ (used to) swim a lot:
             <input type="text" id="usedTo1">
         </label>
-        <button onclick="checkAnswer('usedTo1', 'used to')">Comprobar</button>
-        <div id="feedback5" class="feedback"></div>
+        <button onclick="checkAnswer('usedTo1', 'used to', 'feedback7', 'Se usa \"used to\" para hábitos en el pasado.')">Comprobar</button>
+        <div id="feedback7" class="feedback"></div>
+    </div>
+
+    <h2>Frequency Adverbs / Adverbios de Frecuencia</h2>
+    <p>Los adverbios de frecuencia expresan cuán seguido ocurre una acción.</p>
+    <ul>
+        <li>I <strong>always</strong> wake up early.</li>
+        <li>She <strong>usually</strong> walks to work.</li>
+        <li>They <strong>sometimes</strong> eat out on weekends.</li>
+        <li>He <strong>never</strong> eats fast food.</li>
+    </ul>
+    <div class="exercise">
+        <label>They ___ (always) arrive late:
+            <input type="text" id="frequencyAdverb1">
+        </label>
+        <button onclick="checkAnswer('frequencyAdverb1', 'always', 'feedback8', '\"Always\" se coloca antes del verbo principal.')">Comprobar</button>
+        <div id="feedback8" class="feedback"></div>
+    </div>
+
+    <h2>Past Simple / Pasado Simple</h2>
+    <p>El pasado simple se usa para describir acciones completadas en el pasado.</p>
+    <ul>
+        <li>I <strong>visited</strong> Paris last year.</li>
+        <li>She <strong>went</strong> to the market yesterday.</li>
+        <li>They <strong>played</strong> football last weekend.</li>
+    </ul>
+    <div class="exercise">
+        <label>He ___ (play) tennis last week:
+            <input type="text" id="pastSimple1">
+        </label>
+        <button onclick="checkAnswer('pastSimple1', 'played', 'feedback9', 'En pasado simple, el verbo regular termina en -ed.')">Comprobar</button>
+        <div id="feedback9" class="feedback"></div>
+    </div>
+
+    <h2>Past Continuous / Pasado Continuo</h2>
+    <p>El pasado continuo describe acciones en progreso en un momento específico del pasado.</p>
+    <ul>
+        <li>I <strong>was reading</strong> when the phone rang.</li>
+        <li>They <strong>were playing</strong> soccer at 3 PM.</li>
+        <li>She <strong>was cooking</strong> dinner.</li>
+    </ul>
+    <div class="exercise">
+        <label>We ___ (watch) a movie at 8 PM:
+            <input type="text" id="pastContinuous1">
+        </label>
+        <button onclick="checkAnswer('pastContinuous1', 'were watching', 'feedback10', 'En pasado continuo, usa \"was/were\" + verbo con -ing.')">Comprobar</button>
+        <div id="feedback10" class="feedback"></div>
     </div>
 
 </div>
 
 <script>
-    function checkAnswer(inputId, correctAnswer) {
+    function checkAnswer(inputId, correctAnswer, feedbackId, explanation) {
         const userInput = document.getElementById(inputId).value.trim().toLowerCase();
-        const feedbackId = "feedback" + inputId.slice(-1);
         const feedback = document.getElementById(feedbackId);
 
         if (userInput === correctAnswer.toLowerCase()) {
-            feedback.textContent = "✅ ¡Correcto!";
+            feedback.textContent = `✅ ¡Correcto! ${explanation}`;
             feedback.className = "feedback correct";
         } else {
-            feedback.textContent = "❌ Incorrecto. Inténtalo de nuevo.";
+            feedback.textContent = `❌ Incorrecto. ${explanation}`;
             feedback.className = "feedback incorrect";
         }
     }
