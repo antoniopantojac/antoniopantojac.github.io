@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temas de Inglés - Interactivo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        .content {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .exercise {
+            margin-bottom: 15px;
+        }
+        .feedback {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="content">
+    <h1>Temas de Inglés Interactivos</h1>
+
+    <h2>Prepositions of Time, Place, and Movement / Preposiciones de tiempo, lugar y movimiento</h2>
+    <p>Las preposiciones se usan para conectar palabras en una oración, indicando relaciones de tiempo, lugar o movimiento.</p>
+    <ul>
+        <li>I arrive <strong>at</strong> 8 PM.</li>
+        <li>The keys are <strong>on</strong> the desk.</li>
+        <li>She jumped <strong>into</strong> the pool.</li>
+    </ul>
+    <div class="exercise">
+        <label>We arrived ___ (on/at/in) Monday:
+            <input type="text" id="preposition1">
+        </label>
+        <button onclick="checkAnswer('preposition1', 'on')">Comprobar</button>
+        <div id="feedback1" class="feedback"></div>
+    </div>
+
+    <h2>State Verbs / Verbos de Estado</h2>
+    <p>Los verbos de estado describen pensamientos, sentimientos, posesión o percepción, y no suelen usarse en tiempos continuos.</p>
+    <ul>
+        <li>I <strong>love</strong> pizza.</li>
+        <li>She <strong>believes</strong> in magic.</li>
+        <li>They <strong>have</strong> a new apartment.</li>
+    </ul>
+    <div class="exercise">
+        <label>He ___ (believe) in ghosts:
+            <input type="text" id="stateVerb1">
+        </label>
+        <button onclick="checkAnswer('stateVerb1', 'believes')">Comprobar</button>
+        <div id="feedback2" class="feedback"></div>
+    </div>
+
+    <h2>Present Simple / Presente Simple</h2>
+    <p>El presente simple se usa para expresar hábitos, hechos generales y verdades universales.</p>
+    <ul>
+        <li>I <strong>wake</strong> up at 7 AM.</li>
+        <li>She <strong>works</strong> in an office.</li>
+        <li>They <strong>play</strong> football on weekends.</li>
+    </ul>
+    <div class="exercise">
+        <label>They ___ (play) tennis on Saturdays:
+            <input type="text" id="presentSimple1">
+        </label>
+        <button onclick="checkAnswer('presentSimple1', 'play')">Comprobar</button>
+        <div id="feedback3" class="feedback"></div>
+    </div>
+
+    <h2>Present Continuous / Presente Continuo</h2>
+    <p>El presente continuo describe acciones que están ocurriendo ahora o que ocurrirán en un futuro cercano.</p>
+    <ul>
+        <li>I <strong>am reading</strong> a book right now.</li>
+        <li>She <strong>is working</strong> on a new project.</li>
+    </ul>
+    <div class="exercise">
+        <label>He ___ (watch) TV now:
+            <input type="text" id="presentContinuous1">
+        </label>
+        <button onclick="checkAnswer('presentContinuous1', 'is watching')">Comprobar</button>
+        <div id="feedback4" class="feedback"></div>
+    </div>
+
+    <h2>Used to / Solía</h2>
+    <p>Se usa <strong>used to</strong> para describir hábitos o situaciones en el pasado que ya no ocurren.</p>
+    <ul>
+        <li>I <strong>used to</strong> live in London.</li>
+        <li>She <strong>used to</strong> play the piano.</li>
+    </ul>
+    <div class="exercise">
+        <label>He ___ (used to) swim a lot:
+            <input type="text" id="usedTo1">
+        </label>
+        <button onclick="checkAnswer('usedTo1', 'used to')">Comprobar</button>
+        <div id="feedback5" class="feedback"></div>
+    </div>
+
+</div>
+
+<script>
+    function checkAnswer(inputId, correctAnswer) {
+        const userInput = document.getElementById(inputId).value.trim().toLowerCase();
+        const feedbackId = "feedback" + inputId.slice(-1);
+        const feedback = document.getElementById(feedbackId);
+
+        if (userInput === correctAnswer.toLowerCase()) {
+            feedback.textContent = "✅ ¡Correcto!";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.textContent = "❌ Incorrecto. Inténtalo de nuevo.";
+            feedback.className = "feedback incorrect";
+        }
+    }
+</script>
+
+</body>
+</html>
