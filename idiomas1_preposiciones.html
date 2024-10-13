@@ -2,23 +2,36 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Temas de Gramática Inglesa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temas de Inglés - Interactivo</title>
     <style>
+        /* Estilos */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 20px;
         }
         h1 {
-            color: #2c3e50;
+            text-align: center;
+            color: #333;
         }
-        h3 {
-            color: #34495e;
+        h2 {
+            color: #555;
+        }
+        .content {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .exercise {
             margin-bottom: 20px;
         }
-        .result {
+        .feedback {
             font-weight: bold;
+            margin-top: 5px;
         }
         .correct {
             color: green;
@@ -26,138 +39,278 @@
         .incorrect {
             color: red;
         }
-        .exercise input {
-            margin-right: 10px;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Tema 1 -->
-    <h1>Prepositions of Time, Place, and Movement / Preposiciones de tiempo, lugar y movimiento</h1>
-    <h3>Teoría</h3>
-    <p>Las preposiciones conectan palabras, indicando relaciones de tiempo, lugar o movimiento.</p>
+<div class="content">
+    <h1>Temas de Inglés Interactivos</h1>
 
-    <h3>Ejemplos</h3>
-    <ol>
-        <li>She arrives <strong>at</strong> 8 PM.</li>
-        <li>They were born <strong>in</strong> July.</li>
-        <li>We will meet <strong>on</strong> Friday.</li>
-        <li>The keys are <strong>on</strong> the desk.</li>
-        <li>She jumped <strong>into</strong> the pool.</li>
-    </ol>
-
-    <h3>Ejercicios</h3>
+    <!-- Prepositions of Time, Place, and Movement -->
+    <h2>Prepositions of Time, Place, and Movement / Preposiciones de tiempo, lugar y movimiento</h2>
+    <p>Las preposiciones conectan palabras para indicar relaciones de tiempo, lugar o movimiento.</p>
+    <p><strong>Preposiciones de tiempo:</strong> Usamos "at" para horas específicas, "on" para días y fechas, y "in" para meses, años y períodos largos.</p>
+    <p><strong>Preposiciones de lugar:</strong> "At" para lugares específicos, "on" para superficies, "in" para espacios cerrados.</p>
+    <p><strong>Preposiciones de movimiento:</strong> "To" indica movimiento hacia un lugar, "from" indica origen.</p>
+    <ul>
+        <li>I arrive <strong>at</strong> 8 PM.</li>
+        <li>The keys are <strong>on</strong> the table.</li>
+        <li>We have a meeting <strong>in</strong> September.</li>
+        <li>She is going <strong>to</strong> the park.</li>
+    </ul>
     <div class="exercise">
-        <p><strong>Pregunta:</strong> I go to school ___ (in/on/at) the morning.</p>
-        <input type="text" id="answer1">
-        <button onclick="checkAnswer('answer1', 'result1', 'in', 'Se usa \'in\' para partes del día porque indica una generalización de un período largo.')">Comprobar</button>
-        <p class="result" id="result1"></p>
+        <label>We arrived ___ (on/at/in) Monday:
+            <input type="text" id="preposition1">
+        </label>
+        <button id="btn1">Comprobar</button>
+        <div id="feedback1" class="feedback"></div>
+    </div>
+    <div class="exercise">
+        <label>The book is ___ (on/at/in) the shelf:
+            <input type="text" id="preposition2">
+        </label>
+        <button id="btn2">Comprobar</button>
+        <div id="feedback2" class="feedback"></div>
     </div>
 
+    <!-- State Verbs -->
+    <h2>State Verbs / Verbos de Estado</h2>
+    <p>Los verbos de estado describen estados mentales, emociones, posesión, sentidos y otros estados que no suelen expresarse en tiempos continuos.</p>
+    <ul>
+        <li>I <strong>believe</strong> in justice.</li>
+        <li>She <strong>owns</strong> a car.</li>
+    </ul>
     <div class="exercise">
-        <p><strong>Pregunta:</strong> We arrived ___ (on/at/in) Monday.</p>
-        <input type="text" id="answer2">
-        <button onclick="checkAnswer('answer2', 'result2', 'on', 'Se usa \'on\' para días específicos de la semana.')">Comprobar</button>
-        <p class="result" id="result2"></p>
+        <label>I ___ (know) the answer:
+            <input type="text" id="stateVerb1">
+        </label>
+        <button id="btn3">Comprobar</button>
+        <div id="feedback3" class="feedback"></div>
+    </div>
+    <div class="exercise">
+        <label>They ___ (not like) vegetables:
+            <input type="text" id="stateVerb2">
+        </label>
+        <button id="btn4">Comprobar</button>
+        <div id="feedback4" class="feedback"></div>
     </div>
 
-    <!-- Tema 2 -->
-    <h1>State Verbs / Verbos de Estado</h1>
-    <h3>Teoría</h3>
-    <p>Los verbos de estado describen sentimientos, pensamientos, posesión o percepción.</p>
-
-    <h3>Ejemplos</h3>
-    <ol>
-        <li>I <strong>love</strong> reading.</li>
-        <li>She <strong>believes</strong> in magic.</li>
-        <li>They <strong>have</strong> a new apartment.</li>
-        <li>He <strong>hears</strong> music from the kitchen.</li>
-    </ol>
-
-    <h3>Ejercicios</h3>
-    <div class="exercise">
-        <p><strong>Pregunta:</strong> He ___ (believe) in ghosts.</p>
-        <input type="text" id="answer3">
-        <button onclick="checkAnswer('answer3', 'result3', 'believes', 'La forma correcta es \'believes\' porque \'believe\' es un verbo de estado, que no suele usarse en formas progresivas.')">Comprobar</button>
-        <p class="result" id="result3"></p>
-    </div>
-
-    <div class="exercise">
-        <p><strong>Pregunta:</strong> I ___ (not like) broccoli.</p>
-        <input type="text" id="answer4">
-        <button onclick="checkAnswer('answer4', 'result4', 'don’t like', 'Se usa \'don’t like\' porque \'like\' es un verbo de estado, y para la negación se usa \'don’t\'.')">Comprobar</button>
-        <p class="result" id="result4"></p>
-    </div>
-
-    <!-- Tema 3 -->
-    <h1>Present Simple / Presente Simple</h1>
-    <h3>Teoría</h3>
-    <p>El presente simple describe hábitos y hechos generales.</p>
-
-    <h3>Ejemplos</h3>
-    <ol>
-        <li>I <strong>wake</strong> up at 7 AM.</li>
+    <!-- Present Simple -->
+    <h2>Present Simple / Presente Simple</h2>
+    <p>Se utiliza para expresar hábitos, rutinas y hechos generales. En la tercera persona del singular (he, she, it), se agrega una "s" o "es" al verbo.</p>
+    <ul>
         <li>She <strong>works</strong> in an office.</li>
-        <li>They <strong>play</strong> football on weekends.</li>
-        <li>Water <strong>boils</strong> at 100°C.</li>
-    </ol>
-
-    <h3>Ejercicios</h3>
+        <li>They <strong>play</strong> soccer every weekend.</li>
+    </ul>
     <div class="exercise">
-        <p><strong>Pregunta:</strong> They ___ (play) tennis on Saturdays.</p>
-        <input type="text" id="answer5">
-        <button onclick="checkAnswer('answer5', 'result5', 'play', 'En el presente simple, el verbo \'play\' no cambia cuando el sujeto es \'they\' porque es un pronombre plural.')">Comprobar</button>
-        <p class="result" id="result5"></p>
+        <label>He ___ (study) English every day:
+            <input type="text" id="presentSimple1">
+        </label>
+        <button id="btn5">Comprobar</button>
+        <div id="feedback5" class="feedback"></div>
+    </div>
+    <div class="exercise">
+        <label>I ___ (not watch) TV often:
+            <input type="text" id="presentSimple2">
+        </label>
+        <button id="btn6">Comprobar</button>
+        <div id="feedback6" class="feedback"></div>
     </div>
 
+    <!-- Present Continuous -->
+    <h2>Present Continuous / Presente Continuo</h2>
+    <p>Se utiliza para describir acciones que están ocurriendo en el momento de hablar o planes futuros cercanos. La estructura es "am/is/are + verbo con -ing".</p>
+    <ul>
+        <li>She <strong>is reading</strong> a book now.</li>
+        <li>They <strong>are traveling</strong> to Japan next week.</li>
+    </ul>
     <div class="exercise">
-        <p><strong>Pregunta:</strong> She ___ (not work) on Sundays.</p>
-        <input type="text" id="answer6">
-        <button onclick="checkAnswer('answer6', 'result6', 'doesn’t work', 'Para negativas en presente simple, se usa \'doesn’t\' con la tercera persona del singular (she/he/it).')">Comprobar</button>
-        <p class="result" id="result6"></p>
+        <label>We ___ (have) dinner right now:
+            <input type="text" id="presentContinuous1">
+        </label>
+        <button id="btn7">Comprobar</button>
+        <div id="feedback7" class="feedback"></div>
+    </div>
+    <div class="exercise">
+        <label>He ___ (not sleep) at the moment:
+            <input type="text" id="presentContinuous2">
+        </label>
+        <button id="btn8">Comprobar</button>
+        <div id="feedback8" class="feedback"></div>
     </div>
 
-    <!-- Tema 4 -->
-    <h1>Present Continuous / Presente Continuo</h1>
-    <h3>Teoría</h3>
-    <p>El presente continuo se usa para acciones en progreso o planes próximos.</p>
-
-    <h3>Ejemplos</h3>
-    <ol>
-        <li>I <strong>am reading</strong> a novel right now.</li>
-        <li>She <strong>is studying</strong> for her exam.</li>
-        <li>They <strong>are going</strong> to the cinema tonight.</li>
-        <li>He <strong>is playing</strong> football now.</li>
-    </ol>
-
-    <h3>Ejercicios</h3>
+    <!-- Used to -->
+    <h2>Used to / Solía</h2>
+    <p>Se usa para hablar de hábitos o estados en el pasado que ya no ocurren en el presente. La forma es "used to + verbo base".</p>
+    <ul>
+        <li>I <strong>used to</strong> play the piano.</li>
+        <li>They <strong>didn't use to</strong> eat meat.</li>
+    </ul>
     <div class="exercise">
-        <p><strong>Pregunta:</strong> We ___ (have) dinner now.</p>
-        <input type="text" id="answer7">
-        <button onclick="checkAnswer('answer7', 'result7', 'are having', 'En presente continuo, se usa \'are\' con sujetos plurales como \'we\', seguido del verbo con terminación -ing.')">Comprobar</button>
-        <p class="result" id="result7"></p>
+        <label>She ___ (work) at a bank years ago:
+            <input type="text" id="usedTo1">
+        </label>
+        <button id="btn9">Comprobar</button>
+        <div id="feedback9" class="feedback"></div>
+    </div>
+    <div class="exercise">
+        <label>We ___ (not have) a car before:
+            <input type="text" id="usedTo2">
+        </label>
+        <button id="btn10">Comprobar</button>
+        <div id="feedback10" class="feedback"></div>
     </div>
 
+    <!-- Frequency Adverbs -->
+    <h2>Frequency Adverbs / Adverbios de Frecuencia</h2>
+    <p>Indican con qué frecuencia ocurre una acción. Se colocan antes del verbo principal o después del verbo "to be".</p>
+    <ul>
+        <li>She <strong>always</strong> arrives early.</li>
+        <li>They are <strong>usually</strong> busy.</li>
+    </ul>
     <div class="exercise">
-        <p><strong>Pregunta:</strong> He ___ (not watch) TV now.</p>
-        <input type="text" id="answer8">
-        <button onclick="checkAnswer('answer8', 'result8', 'isn’t watching', 'Para negar en presente continuo, se usa \'isn’t\' con sujetos singulares y el verbo con terminación -ing.')">Comprobar</button>
-        <p class="result" id="result8"></p>
+        <label>I ___ (never) go to bed late:
+            <input type="text" id="frequencyAdverb1">
+        </label>
+        <button id="btn11">Comprobar</button>
+        <div id="feedback11" class="feedback"></div>
+    </div>
+    <div class="exercise">
+        <label>He is ___ (often) late for class:
+            <input type="text" id="frequencyAdverb2">
+        </label>
+        <button id="btn12">Comprobar</button>
+        <div id="feedback12" class="feedback"></div>
     </div>
 
-    <!-- Más temas aquí -->
+    <!-- Past Simple -->
+    <h2>Past Simple / Pasado Simple</h2>
+    <p>Se utiliza para describir acciones completadas en el pasado. Los verbos regulares terminan en "-ed"; los irregulares tienen formas específicas.</p>
+    <ul>
+        <li>They <strong>visited</strong> the museum last week.</li>
+        <li>He <strong>went</strong> to the store yesterday.</li>
+    </ul>
+    <div class="exercise">
+        <label>I ___ (walk) to school yesterday:
+            <input type="text" id="pastSimple1">
+        </label>
+        <button id="btn13">Comprobar</button>
+        <div id="feedback13" class="feedback"></div>
+    </div>
+    <div class="exercise">
+        <label>She ___ (not see) the movie:
+            <input type="text" id="pastSimple2">
+        </label>
+        <button id="btn14">Comprobar</button>
+        <div id="feedback14" class="feedback"></div>
+    </div>
 
-    <script>
-        function checkAnswer(answerId, resultId, correctAnswer, reason) {
-            var userAnswer = document.getElementById(answerId).value.trim().toLowerCase();
-            var resultElement = document.getElementById(resultId);
-            if (userAnswer === correctAnswer.toLowerCase()) {
-                resultElement.innerHTML = '<span class="correct">✅ ¡Correcto!</span> ' + reason;
-            } else {
-                resultElement.innerHTML = '<span class="incorrect">❌ Incorrecto.</span> ' + reason;
-            }
+    <!-- Past Continuous -->
+    <h2>Past Continuous / Pasado Continuo</h2>
+    <p>Describe acciones que estaban en progreso en un momento específico del pasado. La estructura es "was/were + verbo con -ing".</p>
+    <ul>
+        <li>He <strong>was studying</strong> when I called.</li>
+        <li>They <strong>were playing</strong> soccer at 5 PM.</li>
+    </ul>
+    <div class="exercise">
+        <label>We ___ (eat) dinner when you arrived:
+            <input type="text" id="pastContinuous1">
+        </label>
+        <button id="btn15">Comprobar</button>
+        <div id="feedback15" class="feedback"></div>
+    </div>
+    <div class="exercise">
+        <label>I ___ (not listen) to music at that time:
+            <input type="text" id="pastContinuous2">
+        </label>
+        <button id="btn16">Comprobar</button>
+        <div id="feedback16" class="feedback"></div>
+    </div>
+
+</div>
+
+<script>
+    function checkAnswer(inputId, correctAnswers, feedbackId, explanation) {
+        let userInput = document.getElementById(inputId).value.trim().toLowerCase();
+        const feedback = document.getElementById(feedbackId);
+
+        // Normalizar la entrada del usuario y las respuestas correctas
+        userInput = userInput.replace(/’/g, "'"); // Reemplazar apóstrofos especiales
+        const normalizedCorrectAnswers = correctAnswers.map(ans => ans.toLowerCase().replace(/’/g, "'"));
+
+        if (normalizedCorrectAnswers.includes(userInput)) {
+            feedback.textContent = `✅ ¡Correcto! ${explanation}`;
+            feedback.className = "feedback correct";
+        } else {
+            feedback.textContent = `❌ Incorrecto. ${explanation}`;
+            feedback.className = "feedback incorrect";
         }
-    </script>
+    }
+
+    // Prepositions of Time, Place, and Movement
+    document.getElementById('btn1').addEventListener('click', () => {
+        checkAnswer('preposition1', ['on'], 'feedback1', 'Usamos "on" para días específicos.');
+    });
+    document.getElementById('btn2').addEventListener('click', () => {
+        checkAnswer('preposition2', ['on'], 'feedback2', 'Usamos "on" para indicar que algo está sobre una superficie.');
+    });
+
+    // State Verbs
+    document.getElementById('btn3').addEventListener('click', () => {
+        checkAnswer('stateVerb1', ['know'], 'feedback3', 'El verbo "know" es un verbo de estado que no se usa en formas continuas.');
+    });
+    document.getElementById('btn4').addEventListener('click', () => {
+        checkAnswer('stateVerb2', ["don't like", "do not like"], 'feedback4', 'Para la forma negativa en presente simple, usamos "do not" o "don\'t" + verbo base.');
+    });
+
+    // Present Simple
+    document.getElementById('btn5').addEventListener('click', () => {
+        checkAnswer('presentSimple1', ['studies'], 'feedback5', 'En tercera persona del singular, añadimos "es" al verbo que termina en "y" después de consonante.');
+    });
+    document.getElementById('btn6').addEventListener('click', () => {
+        checkAnswer('presentSimple2', ["don't watch", "do not watch"], 'feedback6', 'Usamos "do not" o "don\'t" para la forma negativa en presente simple.');
+    });
+
+    // Present Continuous
+    document.getElementById('btn7').addEventListener('click', () => {
+        checkAnswer('presentContinuous1', ['are having'], 'feedback7', 'Para "we", usamos "are" + verbo con "-ing".');
+    });
+    document.getElementById('btn8').addEventListener('click', () => {
+        checkAnswer('presentContinuous2', ["is not sleeping", "isn't sleeping"], 'feedback8', 'Para la forma negativa, usamos "is not" o "isn\'t" + verbo con "-ing".');
+    });
+
+    // Used to
+    document.getElementById('btn9').addEventListener('click', () => {
+        checkAnswer('usedTo1', ['used to work'], 'feedback9', 'Usamos "used to" + verbo base para hábitos pasados.');
+    });
+    document.getElementById('btn10').addEventListener('click', () => {
+        checkAnswer('usedTo2', ["didn't use to have", "did not use to have"], 'feedback10', 'En negativa, "didn\'t use to" + verbo base.');
+    });
+
+    // Frequency Adverbs
+    document.getElementById('btn11').addEventListener('click', () => {
+        checkAnswer('frequencyAdverb1', ['never'], 'feedback11', 'El adverbio "never" indica que algo nunca ocurre.');
+    });
+    document.getElementById('btn12').addEventListener('click', () => {
+        checkAnswer('frequencyAdverb2', ['often'], 'feedback12', 'Colocamos "often" después del verbo "to be".');
+    });
+
+    // Past Simple
+    document.getElementById('btn13').addEventListener('click', () => {
+        checkAnswer('pastSimple1', ['walked'], 'feedback13', 'Verbos regulares en pasado terminan en "-ed".');
+    });
+    document.getElementById('btn14').addEventListener('click', () => {
+        checkAnswer('pastSimple2', ["didn't see", "did not see"], 'feedback14', 'En negativa, usamos "did not" o "didn\'t" + verbo base.');
+    });
+
+    // Past Continuous
+    document.getElementById('btn15').addEventListener('click', () => {
+        checkAnswer('pastContinuous1', ['were eating'], 'feedback15', 'Para "we", usamos "were" + verbo con "-ing".');
+    });
+    document.getElementById('btn16').addEventListener('click', () => {
+        checkAnswer('pastContinuous2', ["was not listening", "wasn't listening"], 'feedback16', 'Para "I" en negativa, usamos "was not" o "wasn\'t" + verbo con "-ing".');
+    });
+</script>
+
 </body>
 </html>
