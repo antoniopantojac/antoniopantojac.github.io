@@ -1,174 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Visor geográfico UNIGIS/COPANDES</title>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
+    <title>Ejemplo RPA con Selenium</title>
     <style>
         body {
-            padding: 0;
+            font-family: Arial, sans-serif;
             margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        html, body, #map {
-            height: 92%;
-            width: 100%;
-        }
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: #FFF;
-            color: #000;
+
+        .container, .dashboard {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            width: 300px;
             text-align: center;
-            padding: 5px;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            display: none;
         }
-        .footer-top {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-            margin-bottom: 5px;
+
+        h2 {
+            margin-bottom: 1rem;
         }
-        .footer-bottom {
-            font-size: 12px;
-            color: #C0381B;
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .legend-item {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            margin-right: 6px;
-            vertical-align: middle;
+
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
         }
-        @media (max-width: 700px) {
-            .container {
-                width: 100%;
-                margin: 0 auto;
-            }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #reporteMensaje {
+            margin-top: 1rem;
+            color: green;
+            font-weight: bold;
         }
     </style>
 </head>
-<body style="font-family:Verdana;color:#aaaaaa;">
-    <div id='map'></div>
-    <p id="demo"></p>
+<body>
+    <!-- Inicio de sesión -->
+    <div id="loginContainer" class="container">
+        <h2>Inicio de Sesión</h2>
+        <form id="loginForm">
+            <input type="text" id="usuario" placeholder="Usuario" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="button" id="loginBtn">Iniciar Sesión</button>
+        </form>
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMT..." crossorigin=""></script>
-    <script src="location.js" type="text/javascript"></script>
-    <script src="ya_adjudicados_antesde2024.js" type="text/javascript"></script>
-    <script src="perdida_bosque_puerres.js" type="text/javascript"></script>
-    <script src="solicitud_orito.js" type="text/javascript"></script>
-    <script src="solicitud_poligono_intermedio.js" type="text/javascript"></script>
+    <!-- Dashboard -->
+    <div id="dashboardContainer" class="dashboard">
+        <h2>Bienvenido</h2>
+        <p>Haz clic en el botón para descargar el reporte:</p>
+        <button id="descargarBtn">Descargar Reporte</button>
+        <div id="reporteMensaje"></div>
+    </div>
 
     <script>
-        var map = L.map('map').setView([0.7682128, -77.24], 10);
+        document.addEventListener("DOMContentLoaded", function() {
+            // Mostrar el contenedor de inicio de sesión al cargar la página
+            const loginContainer = document.getElementById("loginContainer");
+            const dashboardContainer = document.getElementById("dashboardContainer");
 
-        var arcgisWorldImageryLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Map data &copy; Esri'
-        });
+            loginContainer.style.display = "block";
 
-        var googleSatelliteLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-            attribution: 'Map data &copy; Google'
-        });
+            // Evento para el botón de inicio de sesión
+            document.getElementById("loginBtn").onclick = function() {
+                const usuario = document.getElementById("usuario").value;
+                const password = document.getElementById("password").value;
 
-        var Calles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
-
-        var googleLayer = L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
-            attribution: 'Map data &copy; Google'
-        });
-
-        function getColorStyleVerde(feature) {
-            return {
-                weight: 4,
-                color: '#7DDA58', // Verde
-                opacity: 1,
-                fillOpacity: 0,
+                if (usuario === "mi_usuario" && password === "mi_contraseña") {
+                    // Ocultar login y mostrar dashboard
+                    loginContainer.style.display = "none";
+                    dashboardContainer.style.display = "block";
+                } else {
+                    alert("Credenciales incorrectas. Inténtalo de nuevo.");
+                }
             };
-        }
 
-        function getColorStyleAmarillo(feature) {
-            return {
-                weight: 0.8,
-                color: '#FFFF00',  // Amarillo
-                opacity: 1,
-                fillOpacity: 0,
-                dashArray: '5, 5, 1, 5'
+            // Evento para el botón de descargar reporte
+            document.getElementById("descargarBtn").onclick = function() {
+                document.getElementById("reporteMensaje").innerText = "¡Reporte descargado con éxito!";
             };
-        }
-
-        function getColorStyleMoradoRojo(feature) {
-            return {
-                weight: 4,
-                color: '#FF0000',  // Rojo
-                opacity: 1,
-                fillOpacity: 0,
-                dashArray: '5, 5, 1, 5'
-            };
-        }
-        
-
-        var ya_adjudicados_antesde2024 = new L.geoJson(ya_adjudicados_antesde2024, {
-            style: getColorStyleVerde
         });
-
-        var perdida_bosque_puerres = new L.geoJson(perdida_bosque_puerres, {
-            style: getColorStyleMoradoRojo 
-        });
-
-        var solicitud_orito = new L.geoJson(solicitud_orito, {
-            style: getColorStyleAmarillo
-        }); 
-
-        var solicitud_poligono_intermedio = new L.geoJson(solicitud_poligono_intermedio, {
-            style: getColorStyleAmarillo
-        });        
-
-        $.ajax({
-            url: 'https://www.googleapis.com/bigquery/v2/projects/sigeti/datasets/unidades_de_analisis/tables/comunidades_censo632?alt=json&access_token=[ACCESS_TOKEN]',
-            dataType: 'json',
-            success: function (data) {
-                L.geoJSON(data).addTo(map);
-            }
-        });
-
-        var overlayMaps = {
-            '<i class="legend-item" style="background: #7DDA58"></i>Ya adjudicados a Gran Tescual': ya_adjudicados_antesde2024,            
-            '<i class="legend-item" style="background: #FF0000"></i>Pérdida de bosque - Puerres': perdida_bosque_puerres,
-			'<i class="legend-item" style="background: #FFFF00"></i>Ampliación Orito (en proceso)': solicitud_orito,
-            '<i class="legend-item" style="background: #FFFF00"></i>Ampliación Z. intermedia (en proceso)': solicitud_poligono_intermedio,
-            
-        };
-
-        var baseMaps = {
-            "Capa base ArcGIS": arcgisWorldImageryLayer,
-            "Capa Base G. Satélite": googleSatelliteLayer,
-            "Capa Base G. Calles": Calles,
-            //"Capa Base G. General ": googleLayer
-        };
-
-        googleSatelliteLayer.addTo(map); // Añadir la capa de imagen del mundo como capa base por defecto
-        ya_adjudicados_antesde2024.addTo(map); // Añadir la capa de zonas adjudicadas por defecto
-		perdida_bosque_puerres.addTo(map); // Añadir la capa perdida_bosque_puerres por defecto
-        // solicitud_orito.addTo(map);  Añadir la capa "Globo 3" como capa superpuesta por defecto
-        //solicitud_poligono_intermedio.addTo(map);
-
-        L.control.layers(baseMaps, overlayMaps, { collapsed: true }).addTo(map);
     </script>
-
-    <div class="footer">
-        <div class="footer-top">
-            Descargar <a href="https://plusacat-my.sharepoint.com/:f:/g/personal/antonio_pantoja_plus_ac_at/EqahzHnlBulGuZc9BDBs9GoBvjV5is366QhFrHG66I-f2w" target="_blank" rel="noreferrer noopener">PDF/imagen y Shapes</a>
-          
-        </div>
-        <div class="footer-bottom">
-            © copyright: @AntonioPantojaC - antoniopantojac@gmail.com<br>
-            <a href="https://twitter.com/AntonioPantojaC" target="_blank" rel="noreferrer noopener">Twitter |</a>
-            <a href="https://www.linkedin.com/in/antoniopantojac/" target="_blank" rel="noreferrer noopener">LinkedIn |</a>
-            <a href="https://americalatina.unigis.net/" target="_blank" rel="noreferrer noopener">UNIGIS América Latina |</a>
-            <a href="https://copandes.org/" target="_blank" rel="noreferrer noopener">COPANDES</a>
-        </div>
-    </div>
 </body>
 </html>
