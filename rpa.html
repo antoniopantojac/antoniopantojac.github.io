@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo de RPA</title>
+    <title>Ejemplo RPA con Selenium</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,13 +16,14 @@
             height: 100vh;
         }
 
-        .container {
+        .container, .dashboard {
             background-color: white;
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             width: 300px;
             text-align: center;
+            display: none;
         }
 
         h2 {
@@ -51,40 +52,59 @@
             background-color: #218838;
         }
 
-        .descargar-reporte {
-            margin-top: 1.5rem;
-            display: none;
+        #reporteMensaje {
+            margin-top: 1rem;
             color: green;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Inicio de sesión -->
+    <div id="loginContainer" class="container">
         <h2>Inicio de Sesión</h2>
         <form id="loginForm">
             <input type="text" id="usuario" placeholder="Usuario" required>
             <input type="password" id="password" placeholder="Contraseña" required>
             <button type="button" id="loginBtn">Iniciar Sesión</button>
         </form>
-        <div id="reporte" class="descargar-reporte">
-            <p>¡Reporte descargado con éxito!</p>
-        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardContainer" class="dashboard">
+        <h2>Bienvenido</h2>
+        <p>Haz clic en el botón para descargar el reporte:</p>
+        <button id="descargarBtn">Descargar Reporte</button>
+        <div id="reporteMensaje"></div>
     </div>
 
     <script>
-        // Simulación del botón de descarga al iniciar sesión correctamente
-        document.getElementById("loginBtn").onclick = function() {
-            const usuario = document.getElementById("usuario").value;
-            const password = document.getElementById("password").value;
+        document.addEventListener("DOMContentLoaded", function() {
+            // Mostrar el contenedor de inicio de sesión al cargar la página
+            const loginContainer = document.getElementById("loginContainer");
+            const dashboardContainer = document.getElementById("dashboardContainer");
 
-            if (usuario === "user" && password === "psw") {
-                document.getElementById("reporte").style.display = "block";
-                console.log("Inicio de sesión exitoso. Mostrando botón de descarga.");
-            } else {
-                alert("Credenciales incorrectas. Inténtalo de nuevo.");
-            }
-        };
+            loginContainer.style.display = "block";
+
+            // Evento para el botón de inicio de sesión
+            document.getElementById("loginBtn").onclick = function() {
+                const usuario = document.getElementById("usuario").value;
+                const password = document.getElementById("password").value;
+
+                if (usuario === "user" && password === "psw") {
+                    // Ocultar login y mostrar dashboard
+                    loginContainer.style.display = "none";
+                    dashboardContainer.style.display = "block";
+                } else {
+                    alert("Credenciales incorrectas. Inténtalo de nuevo.");
+                }
+            };
+
+            // Evento para el botón de descargar reporte
+            document.getElementById("descargarBtn").onclick = function() {
+                document.getElementById("reporteMensaje").innerText = "¡Reporte descargado con éxito!";
+            };
+        });
     </script>
 </body>
 </html>
