@@ -76,8 +76,7 @@
     <div id="dashboardContainer" class="dashboard">
         <h2>Bienvenido</h2>
         <p>Haz clic en el botón para descargar el archivo:</p>
-        <a id="descargarBtn" href="https://www.cursosdedesarrollo.com/wp-content/uploads/2020/09/web-scraping.pdf" 
-           download="web-scraping.pdf">Descargar archivo</a>
+        <button id="descargarBtn">Descargar archivo</button>
         <div id="reporteMensaje"></div>
     </div>
 
@@ -101,8 +100,13 @@
                 }
             };
 
-            // Evento para mostrar mensaje después de la descarga
+            // Evento para el botón de descarga
             document.getElementById("descargarBtn").onclick = function() {
+                // Abrir el enlace en una nueva pestaña
+                const enlace = "https://drive.google.com/file/d/1gwPRTn1M_GlhMNRE3k21ELnvShhR3YRW/view?usp=drive_link";
+                window.open(enlace, '_blank');
+
+                // Mostrar el mensaje de éxito
                 document.getElementById("reporteMensaje").innerText = "¡Reporte descargado con éxito!";
             };
         });
