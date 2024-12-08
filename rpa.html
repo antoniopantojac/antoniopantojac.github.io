@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de RPA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .descargar-reporte {
+            margin-top: 1.5rem;
+            display: none;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Inicio de Sesión</h2>
+        <form id="loginForm">
+            <input type="text" id="usuario" placeholder="Usuario" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="button" id="loginBtn">Iniciar Sesión</button>
+        </form>
+        <div id="reporte" class="descargar-reporte">
+            <p>¡Reporte descargado con éxito!</p>
+        </div>
+    </div>
+
+    <script>
+        // Simulación del botón de descarga al iniciar sesión correctamente
+        document.getElementById("loginBtn").onclick = function() {
+            const usuario = document.getElementById("usuario").value;
+            const password = document.getElementById("password").value;
+
+            if (usuario === "mi_usuario" && password === "mi_contraseña") {
+                document.getElementById("reporte").style.display = "block";
+                console.log("Inicio de sesión exitoso. Mostrando botón de descarga.");
+            } else {
+                alert("Credenciales incorrectas. Inténtalo de nuevo.");
+            }
+        };
+    </script>
+</body>
+</html>
