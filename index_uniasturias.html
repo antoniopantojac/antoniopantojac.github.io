@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web Sencilla</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .counter-section {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .counter {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bienvenido a Mi Página Web</h1>
+            <p class="subtitle">Una página web sencilla y moderna</p>
+        </header>
+
+        <div class="main-content">
+            <h2>Características Principales</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Diseño Responsivo</h3>
+                    <p>Esta página se adapta perfectamente a cualquier dispositivo, desde móviles hasta computadoras de escritorio.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Interactividad</h3>
+                    <p>Incluye elementos interactivos con JavaScript para mejorar la experiencia del usuario.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Estilo Moderno</h3>
+                    <p>Utiliza gradientes, sombras y animaciones para crear un diseño atractivo y contemporáneo.</p>
+                </div>
+            </div>
+
+            <div class="counter-section">
+                <h3>Contador de Visitas</h3>
+                <div class="counter" id="counter">0</div>
+                <button class="btn" onclick="incrementCounter()">Incrementar</button>
+                <button class="btn" onclick="resetCounter()">Reiniciar</button>
+            </div>
+
+            <div class="cta-section">
+                <h3>¿Te gusta esta página?</h3>
+                <p>¡Haz clic en el botón para ver una sorpresa!</p>
+                <button class="btn" onclick="showMessage()">¡Haz Clic Aquí!</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Mi Página Web Sencilla. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Variables globales
+        let counter = 0;
+        let clickCount = 0;
+
+        // Función para incrementar el contador
+        function incrementCounter() {
+            counter++;
+            document.getElementById('counter').textContent = counter;
+            
+            // Efecto visual
+            const counterElement = document.getElementById('counter');
+            counterElement.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                counterElement.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // Función para reiniciar el contador
+        function resetCounter() {
+            counter = 0;
+            document.getElementById('counter').textContent = counter;
+        }
+
+        // Función para mostrar mensaje
+        function showMessage() {
+            clickCount++;
+            const messages = [
+                "¡Gracias por visitar mi página!",
+                "¡Eres increíble!",
+                "¡Sigue explorando!",
+                "¡Me encanta tu entusiasmo!",
+                "¡Eres el visitante número " + clickCount + "!"
+            ];
+            
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            alert(randomMessage);
+        }
+
+        // Animación de entrada para las tarjetas
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.feature-card');
+            
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+
+        // Efecto de escritura para el título
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Aplicar efecto de escritura al título cuando se carga la página
+        window.addEventListener('load', function() {
+            const title = document.querySelector('h1');
+            const originalText = title.textContent;
+            typeWriter(title, originalText, 150);
+        });
+
+        // Función para cambiar el color de fondo aleatoriamente
+        function changeBackground() {
+            const colors = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+            ];
+            
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.background = randomColor;
+        }
+
+        // Agregar evento de doble clic al header para cambiar el fondo
+        document.querySelector('header').addEventListener('dblclick', changeBackground);
+    </script>
+</body>
+</html>
