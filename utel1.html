@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: #718096;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .counter-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .counter {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .counter-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            margin-top: 30px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .counter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .counter {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card, .counter-section, .form-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Mi Página Web</h1>
+            <p class="subtitle">Una página web moderna y responsive</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>Características</h2>
+                <p>Esta página web incluye diseño responsive, animaciones suaves y una interfaz moderna que se adapta perfectamente a dispositivos móviles.</p>
+                <button class="btn" onclick="mostrarMensaje()">Ver Más</button>
+            </div>
+
+            <div class="card">
+                <h2>Funcionalidades</h2>
+                <p>Incluye un contador interactivo, formulario de contacto y efectos visuales que mejoran la experiencia del usuario.</p>
+                <button class="btn" onclick="cambiarColor()">Cambiar Color</button>
+            </div>
+
+            <div class="card">
+                <h2>Tecnologías</h2>
+                <p>Desarrollada con HTML5, CSS3 y JavaScript vanilla, optimizada para rendimiento y compatibilidad.</p>
+                <button class="btn" onclick="mostrarInfo()">Información</button>
+            </div>
+        </div>
+
+        <div class="counter-section">
+            <h2>Contador Interactivo</h2>
+            <div class="counter" id="counter">0</div>
+            <div class="counter-buttons">
+                <button class="btn" onclick="decrementar()">-</button>
+                <button class="btn" onclick="resetear()">Reset</button>
+                <button class="btn" onclick="incrementar()">+</button>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Formulario de Contacto</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="mensaje">Mensaje:</label>
+                    <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn">Enviar Mensaje</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Mi Página Web. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Variables globales
+        let contador = 0;
+        let colorIndex = 0;
+        const colores = [
+            'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+            'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+        ];
+
+        // Funciones del contador
+        function incrementar() {
+            contador++;
+            actualizarContador();
+        }
+
+        function decrementar() {
+            contador--;
+            actualizarContador();
+        }
+
+        function resetear() {
+            contador = 0;
+            actualizarContador();
+        }
+
+        function actualizarContador() {
+            document.getElementById('counter').textContent = contador;
+        }
+
+        // Función para cambiar color de fondo
+        function cambiarColor() {
+            colorIndex = (colorIndex + 1) % colores.length;
+            document.body.style.background = colores[colorIndex];
+        }
+
+        // Función para mostrar mensaje
+        function mostrarMensaje() {
+            alert('¡Gracias por visitar nuestra página web!');
+        }
+
+        // Función para mostrar información
+        function mostrarInfo() {
+            alert('Esta página está construida con tecnologías web estándar: HTML5, CSS3 y JavaScript.');
+        }
+
+        // Manejo del formulario
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const mensaje = document.getElementById('mensaje').value;
+            
+            if (nombre && email && mensaje) {
+                alert(`¡Gracias ${nombre}! Tu mensaje ha sido enviado. Te contactaremos en ${email} pronto.`);
+                document.getElementById('contactForm').reset();
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        });
+
+        // Efectos adicionales
+        document.addEventListener('DOMContentLoaded', function() {
+            // Añadir efecto de escritura al título
+            const titulo = document.querySelector('h1');
+            const textoOriginal = titulo.textContent;
+            titulo.textContent = '';
+            
+            let i = 0;
+            const escribirTitulo = setInterval(() => {
+                titulo.textContent += textoOriginal.charAt(i);
+                i++;
+                if (i >= textoOriginal.length) {
+                    clearInterval(escribirTitulo);
+                }
+            }, 100);
+
+            // Añadir efecto de scroll suave
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+
+        // Detectar dispositivo móvil
+        function esDispositivoMovil() {
+            return window.innerWidth <= 768;
+        }
+
+        // Ajustar comportamiento según el dispositivo
+        window.addEventListener('resize', function() {
+            if (esDispositivoMovil()) {
+                console.log('Vista móvil detectada');
+            } else {
+                console.log('Vista de escritorio detectada');
+            }
+        });
+
+        // Añadir efecto de parallax sutil
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.container');
+            const speed = scrolled * 0.5;
+            
+            if (!esDispositivoMovil()) {
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
