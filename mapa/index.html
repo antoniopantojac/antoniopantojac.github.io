@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mapa interactivo del municipio de Puerres, Nariño, Colombia">
+    <meta name="theme-color" content="#2c3e50">
+    
+    <!-- Headers anti-caché para desarrollo -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Mapa de Puerres - Nariño, Colombia</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Mapa Puerres">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icons/icon-192x192.png">
+</head>
+<body>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Info Panel - Minimizado -->
+        <div class="info-panel" style="display: none;">
+            <div class="container">
+                <div class="welcome-message">
+                    <h2 data-translate="welcome">¡Bienvenidos a Puerres!</h2>
+                    <p data-translate="description">
+                        Municipio ubicado en el departamento de Nariño, Colombia. 
+                        Usa el mapa para explorar los lugares de interés del municipio.
+                    </p>
+                </div>
+                
+                <div class="status-indicator">
+                    <span id="onlineStatus" class="status-badge online">
+                        <i class="fas fa-wifi"></i>
+                        <span data-translate="online">En línea</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <!-- Map Controls (Top Right) -->
+            <div class="map-controls">
+                <!-- Map Type Selector -->
+                <div class="map-type-selector">
+                    <button id="mapTypeBtn" class="btn-icon" title="Cambiar tipo de mapa">
+                        <i class="fas fa-layer-group"></i>
+                    </button>
+                    <div id="mapTypeMenu" class="map-type-menu" style="display: none;">
+                        <div class="map-type-option active" data-type="osm">
+                            <i class="fas fa-map"></i>
+                            <span>OpenStreetMap</span>
+                        </div>
+                        <div class="map-type-option" data-type="satellite">
+                            <i class="fas fa-satellite"></i>
+                            <span>Satélite</span>
+                        </div>
+                        <div class="map-type-option" data-type="terrain">
+                            <i class="fas fa-mountain"></i>
+                            <span>Relieve</span>
+                        </div>
+                        <div class="map-type-option" data-type="dark">
+                            <i class="fas fa-moon"></i>
+                            <span>Oscuro</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="installBtn" class="btn-icon" title="Instalar App" style="display: none;">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button id="clearCacheBtn" class="btn-icon" title="Limpiar caché y actualizar" style="display: none;">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button id="locateBtn" class="btn-icon" title="Mi ubicación">
+                    <i class="fas fa-crosshairs"></i>
+                </button>
+                <button id="resetViewBtn" class="btn-icon" title="Vista inicial">
+                    <i class="fas fa-home"></i>
+                </button>
+            </div>
+
+            <!-- Edit Controls (Bottom Right) -->
+            <div class="edit-controls">
+                <button id="editModeBtn" class="btn-icon edit-btn" title="Editar puntos de interés">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Edit Panel -->
+        <div id="editPanel" class="edit-panel" style="display: none;">
+            <div class="edit-panel-header">
+                <h3>✏️ Gestión de Puntos de Interés</h3>
+                <div class="panel-controls">
+                    <button id="minimizePanel" class="minimize-btn" title="Minimizar panel" style="display: none;">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button id="closeEditPanel" class="btn-close">&times;</button>
+                </div>
+            </div>
+            <div class="edit-panel-content">
+                <!-- Tabs de navegación -->
+                <div class="edit-tabs">
+                    <button class="tab-btn active" data-tab="edit">Editar</button>
+                    <button class="tab-btn" data-tab="add">Agregar</button>
+                    <button class="tab-btn" data-tab="manage">Gestionar</button>
+                </div>
+
+                <!-- Tab Editar -->
+                <div id="tab-edit" class="tab-content active">
+                    <p>Haz clic en cualquier punto de interés para editarlo.</p>
+                    <div id="selectedPOI" class="selected-poi" style="display: none;">
+                        <h4 id="selectedPOIName">Punto seleccionado</h4>
+                        
+                        <div class="poi-edit-section">
+                            <label>Nombre: <input type="text" id="poiName" placeholder="Nombre del punto"></label>
+                        </div>
+                        
+                        <div class="poi-edit-section">
+                            <label>Descripción: <textarea id="poiDescription" placeholder="Descripción del punto"></textarea></label>
+                        </div>
+                        
+                        <div class="poi-edit-section">
+                            <label>WhatsApp: <input type="tel" id="poiWhatsapp" placeholder="3001234567 o +573001234567"></label>
+                        </div>
+                        
+                        <div class="poi-edit-section">
+                            <label>Icono:</label>
+                            <div id="selectedIcon" class="icon-preview"></div>
+                            <button id="changeIcon" class="btn-secondary">Cambiar Icono</button>
+                        </div>
+                        
+                        <div class="coordinates">
+                            <label>Latitud: <input type="number" id="poiLat" step="0.000001" placeholder="0.000000"></label>
+                            <label>Longitud: <input type="number" id="poiLng" step="0.000001" placeholder="0.000000"></label>
+                            <small style="color: #7f8c8d; font-size: 0.8rem; display: block; margin-top: 5px;">
+                                💡 Puedes arrastrar el marcador en el mapa o editar las coordenadas manualmente
+                            </small>
+                        </div>
+                        
+                        <div class="edit-actions">
+                            <button id="updatePOI" class="btn-primary">Actualizar</button>
+                            <button id="deletePOI" class="btn-danger">Eliminar</button>
+                            <button id="cancelEdit" class="btn-secondary">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Agregar -->
+                <div id="tab-add" class="tab-content">
+                    <p>Haz clic en el mapa para agregar un nuevo punto de interés.</p>
+                    <div class="add-form">
+                        <label>Nombre: <input type="text" id="newPoiName" placeholder="Ej: Hotel El Dorado"></label>
+                        <label>Descripción: <textarea id="newPoiDescription" placeholder="Descripción del lugar"></textarea></label>
+                        <label>WhatsApp: <input type="tel" id="newPoiWhatsapp" placeholder="3001234567 o +573001234567"></label>
+                        
+                        <!-- Toggle para coordenadas -->
+                        <div style="margin: 10px 0; padding: 8px; background: #f8f9fa; border-radius: 6px; border: 1px solid #dee2e6;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem;">
+                                <input type="checkbox" id="useCoordinates" style="margin: 0;">
+                                <span>📍 Usar coordenadas exactas</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Campos de coordenadas (ocultos por defecto) -->
+                        <div id="coordinatesSection" style="display: none; margin: 10px 0; padding: 10px; background: #e3f2fd; border-radius: 6px; border-left: 4px solid #2196f3;">
+                            <strong style="color: #1976d2;">📐 Coordenadas:</strong>
+                            <div style="margin-top: 8px;">
+                                <label style="display: block; margin-bottom: 5px;">
+                                    Latitud: <input type="number" id="newPoiLat" step="0.000001" placeholder="0.883200" style="width: 120px;">
+                                </label>
+                                <label style="display: block; margin-bottom: 5px;">
+                                    Longitud: <input type="number" id="newPoiLng" step="0.000001" placeholder="-77.504000" style="width: 120px;">
+                                </label>
+                                <small style="color: #666; font-size: 0.8rem;">
+                                    💡 Ingresa las coordenadas decimales exactas
+                                </small>
+                            </div>
+                        </div>
+                        
+                        <label>Tipo de lugar:</label>
+                        <select id="newPoiType">
+                            <optgroup label="🏨 Alojamiento">
+                                <option value="hotel">Hotel</option>
+                                <option value="hostel">Hostal</option>
+                                <option value="camping">Camping</option>
+                                <option value="cabin">Cabaña</option>
+                            </optgroup>
+                            <optgroup label="🍽️ Alimentación">
+                                <option value="restaurant">Restaurante</option>
+                                <option value="cafe">Café</option>
+                                <option value="bar">Bar</option>
+                                <option value="bakery">Panadería</option>
+                                <option value="market">Mercado</option>
+                                <option value="food_truck">Food Truck</option>
+                            </optgroup>
+                            <optgroup label="🛍️ Comercio">
+                                <option value="shop">Tienda</option>
+                                <option value="supermarket">Supermercado</option>
+                                <option value="pharmacy">Farmacia</option>
+                                <option value="clothing">Ropa</option>
+                                <option value="electronics">Electrónicos</option>
+                                <option value="bookstore">Librería</option>
+                            </optgroup>
+                            <optgroup label="🏥 Servicios de Salud">
+                                <option value="hospital">Hospital</option>
+                                <option value="clinic">Clínica</option>
+                                <option value="dentist">Dentista</option>
+                                <option value="veterinary">Veterinaria</option>
+                            </optgroup>
+                            <optgroup label="🎓 Educación">
+                                <option value="school">Escuela</option>
+                                <option value="university">Universidad</option>
+                                <option value="library">Biblioteca</option>
+                                <option value="museum">Museo</option>
+                            </optgroup>
+                            <optgroup label="⛪ Lugares Religiosos">
+                                <option value="church">Iglesia</option>
+                                <option value="cathedral">Catedral</option>
+                                <option value="chapel">Capilla</option>
+                                <option value="mosque">Mezquita</option>
+                                <option value="temple">Templo</option>
+                            </optgroup>
+                            <optgroup label="🌳 Espacios Públicos">
+                                <option value="park">Parque</option>
+                                <option value="plaza">Plaza</option>
+                                <option value="beach">Playa</option>
+                                <option value="stadium">Estadio</option>
+                                <option value="gym">Gimnasio</option>
+                            </optgroup>
+                            <optgroup label="🚗 Transporte">
+                                <option value="gas_station">Gasolinera</option>
+                                <option value="parking">Parqueadero</option>
+                                <option value="bus_station">Terminal de Buses</option>
+                                <option value="airport">Aeropuerto</option>
+                                <option value="taxi">Taxi</option>
+                            </optgroup>
+                            <optgroup label="🏦 Servicios Financieros">
+                                <option value="bank">Banco</option>
+                                <option value="atm">Cajero</option>
+                                <option value="money_exchange">Cambio de Moneda</option>
+                            </optgroup>
+                            <optgroup label="🎭 Entretenimiento">
+                                <option value="cinema">Cine</option>
+                                <option value="theater">Teatro</option>
+                                <option value="casino">Casino</option>
+                                <option value="arcade">Arcade</option>
+                                <option value="nightclub">Discoteca</option>
+                            </optgroup>
+                            <optgroup label="🏛️ Servicios Públicos">
+                                <option value="town_hall">Alcaldía</option>
+                                <option value="police">Policía</option>
+                                <option value="fire_station">Bomberos</option>
+                                <option value="post_office">Correos</option>
+                            </optgroup>
+                            <optgroup label="🏭 Industria">
+                                <option value="factory">Fábrica</option>
+                                <option value="warehouse">Bodega</option>
+                                <option value="office">Oficina</option>
+                            </optgroup>
+                            <optgroup label="🏔️ Turismo">
+                                <option value="viewpoint">Mirador</option>
+                                <option value="waterfall">Cascada</option>
+                                <option value="mountain">Montaña</option>
+                                <option value="lake">Lago</option>
+                                <option value="river">Río</option>
+                            </optgroup>
+                            <optgroup label="🔧 Servicios">
+                                <option value="mechanic">Mecánico</option>
+                                <option value="beauty_salon">Salón de Belleza</option>
+                                <option value="barber">Barbería</option>
+                                <option value="laundry">Lavandería</option>
+                                <option value="repair">Reparaciones</option>
+                            </optgroup>
+                            <optgroup label="🏠 Residencial">
+                                <option value="house">Casa</option>
+                                <option value="apartment">Apartamento</option>
+                                <option value="neighborhood">Barrio</option>
+                            </optgroup>
+                            <optgroup label="📍 Otros">
+                                <option value="landmark">Monumento</option>
+                                <option value="bridge">Puente</option>
+                                <option value="tunnel">Túnel</option>
+                                <option value="border">Frontera</option>
+                                <option value="other">Otro</option>
+                            </optgroup>
+                        </select>
+                        <div class="add-actions">
+                            <button id="addNewPOI" class="btn-primary" disabled>📍 Agregar en el mapa</button>
+                            <button id="addNewPOICoords" class="btn-primary" disabled style="display: none;">📐 Agregar por coordenadas</button>
+                            <button id="cancelAdd" class="btn-secondary">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Gestionar -->
+                <div id="tab-manage" class="tab-content">
+                    <div class="manage-header">
+                        <p>Lista de todos los puntos de interés:</p>
+                    </div>
+                    <div id="poiList" class="poi-list">
+                        <!-- Se llenará dinámicamente con estructura:
+                        <div class="poi-list-item" data-id="...">
+                            <div class="poi-name">Nombre del POI</div>
+                            <div class="poi-details">Descripción</div>
+                            <div class="poi-whatsapp">📱 WhatsApp</div>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Icon Gallery Modal -->
+        <div id="iconGallery" class="icon-gallery" style="display: none;">
+            <div class="icon-gallery-header">
+                <h3>🎨 Seleccionar Icono</h3>
+                <button id="closeIconGallery" class="btn-close">&times;</button>
+            </div>
+            <div class="icon-gallery-content">
+                <div class="icon-grid">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend - Oculto -->
+        <div class="legend" style="display: none;">
+            <div class="container">
+                <h3 data-translate="legend">Leyenda</h3>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-marker interest">
+                            <i class="fas fa-map-pin"></i>
+                        </div>
+                        <span data-translate="poi">Puntos de Interés</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section - Oculto -->
+        <div class="info-section" style="display: none;">
+            <div class="container">
+                <div class="info-cards">
+                    <div class="info-card">
+                        <i class="fas fa-info-circle"></i>
+                        <h3 data-translate="infoTitle">Información</h3>
+                        <p data-translate="infoText">
+                            Esta aplicación funciona sin conexión a Internet una vez instalada.
+                        </p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3 data-translate="installTitle">Instalar</h3>
+                        <p data-translate="installText">
+                            Puedes instalar esta app en tu dispositivo para acceso rápido.
+                        </p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-map-marked"></i>
+                        <h3 data-translate="exploreTitle">Explorar</h3>
+                        <p data-translate="exploreText">
+                            Toca los marcadores en el mapa para ver más información.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>
+                &copy; 2025 R.I Gran Tescual - CIASE | Adm. antoniopantojac@gmail.com
+            </p>
+        </div>
+    </footer>
+
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p data-translate="loading">Cargando mapa...</p>
+    </div>
+
+    <!-- Modal de Autenticación -->
+    <div id="authModal" class="auth-modal" style="display: none;">
+        <div class="auth-modal-content">
+            <h2>🔐 Acceso de Administrador</h2>
+            <form id="authForm" class="auth-form">
+                <input type="text" id="username" placeholder="Usuario" required>
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <div class="auth-buttons">
+                    <button type="submit" class="btn-primary">Ingresar</button>
+                    <button type="button" id="cancelAuth" class="btn-secondary">Cancelar</button>
+                </div>
+                <div id="authError" class="auth-error">Usuario o contraseña incorrectos</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Generar timestamp para evitar caché
+        const timestamp = Date.now();
+        document.write('<script src="js/map.js?v=' + timestamp + '"><\/script>');
+        document.write('<script src="js/app.js?v=' + timestamp + '"><\/script>');
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador de Archivos - Servidor</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .file-check { margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Verificador de Archivos en Servidor</h1>
+    
+    <div id="results"></div>
+    
+    <button onclick="verificarArchivos()">Verificar Archivos</button>
+    <button onclick="limpiarCache()">Limpiar Caché Local</button>
+    <button onclick="forzarActualizacion()">Forzar Actualización</button>
+    
+    <script>
+        const archivos = [
+            'index.html',
+            'css/style.css',
+            'js/map.js',
+            'js/app.js',
+            'service-worker.js',
+            'manifest.json',
+            'version.txt'
+        ];
+        
+        async function verificarArchivos() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Verificando archivos...</h2>';
+            
+            for (const archivo of archivos) {
+                try {
+                    const response = await fetch(archivo + '?v=' + Date.now(), {
+                        method: 'HEAD',
+                        cache: 'no-cache'
+                    });
+                    
+                    const div = document.createElement('div');
+                    div.className = 'file-check';
+                    
+                    if (response.ok) {
+                        const lastModified = response.headers.get('Last-Modified');
+                        div.className += ' success';
+                        div.innerHTML = `
+                            <strong>✅ ${archivo}</strong><br>
+                            Estado: ${response.status} ${response.statusText}<br>
+                            Última modificación: ${lastModified || 'No disponible'}
+                        `;
+                    } else {
+                        div.className += ' error';
+                        div.innerHTML = `
+                            <strong>❌ ${archivo}</strong><br>
+                            Error: ${response.status} ${response.statusText}
+                        `;
+                    }
+                    
+                    results.appendChild(div);
+                } catch (error) {
+                    const div = document.createElement('div');
+                    div.className = 'file-check error';
+                    div.innerHTML = `
+                        <strong>❌ ${archivo}</strong><br>
+                        Error de red: ${error.message}
+                    `;
+                    results.appendChild(div);
+                }
+            }
+        }
+        
+        async function limpiarCache() {
+            if ('serviceWorker' in navigator && 'caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(
+                        cacheNames.map(cacheName => caches.delete(cacheName))
+                    );
+                    
+                    if (navigator.serviceWorker.controller) {
+                        navigator.serviceWorker.controller.postMessage({
+                            type: 'CLEAR_CACHE'
+                        });
+                    }
+                    
+                    alert('✅ Caché local limpiado. Recargando página...');
+                    window.location.reload();
+                } catch (error) {
+                    alert('❌ Error al limpiar caché: ' + error.message);
+                }
+            } else {
+                alert('❌ Service Worker no disponible');
+            }
+        }
+        
+        function forzarActualizacion() {
+            // Forzar recarga sin caché
+            window.location.href = window.location.href + '?force=' + Date.now();
+        }
+        
+        // Verificar automáticamente al cargar
+        window.onload = verificarArchivos;
+    </script>
+</body>
+</html>
