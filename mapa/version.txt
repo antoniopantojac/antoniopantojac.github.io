@@ -1,8 +1,0 @@
-VERSION: 4.0.0
-TIMESTAMP: 2025-01-16 19:05:00
-CHANGES: 
-- Panel responsivo mejorado
-- Botón minimizar agregado
-- Service Worker anti-caché implementado
-- Headers anti-caché agregados
-- Funcionalidad de limpiar caché
