@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Puerres - Versión Simple</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            overflow: hidden;
+        }
+        
+        #map {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        /* Botón de edición */
+        .edit-mode-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-mode-btn:hover {
+            background: #5a6fd8;
+            transform: scale(1.1);
+        }
+        
+        /* Panel de edición */
+        .edit-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            max-height: 80vh;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+        }
+        
+        .edit-panel.show {
+            display: block;
+        }
+        
+        .edit-panel-header {
+            background: #667eea;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .edit-panel-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .edit-panel-content {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+        }
+        
+        .btn-success:hover {
+            background: #229954;
+        }
+        
+        /* Mensajes */
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .message.show {
+            opacity: 1;
+        }
+        
+        .message.success {
+            background: #27ae60;
+        }
+        
+        .message.error {
+            background: #e74c3c;
+        }
+        
+        .message.info {
+            background: #3498db;
+        }
+        
+        /* Escala */
+        .map-scale {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #333;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .edit-panel {
+                width: calc(100vw - 40px);
+                right: 20px;
+                left: 20px;
+            }
+            
+            .edit-mode-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <!-- Botón de modo edición -->
+    <button class="edit-mode-btn" id="editModeBtn" title="Modo Edición">
+        <i class="fas fa-edit"></i>
+    </button>
+    
+    <!-- Panel de edición -->
+    <div class="edit-panel" id="editPanel">
+        <div class="edit-panel-header">
+            <h3><i class="fas fa-edit"></i> Agregar Punto de Interés</h3>
+            <button class="close-btn" id="closeEditPanel">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="edit-panel-content">
+            <div class="form-group">
+                <label for="newPoiName">Nombre *</label>
+                <input type="text" id="newPoiName" placeholder="Ej: Hotel Central" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="newPoiDescription">Descripción</label>
+                <textarea id="newPoiDescription" rows="3" placeholder="Descripción del lugar"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="newPoiWhatsapp">WhatsApp</label>
+                <input type="text" id="newPoiWhatsapp" placeholder="3001234567">
+            </div>
+            
+            <div class="form-group">
+                <label for="newPoiType">Tipo</label>
+                <select id="newPoiType">
+                    <option value="hotel">🏨 Hotel</option>
+                    <option value="restaurant">🍽️ Restaurante</option>
+                    <option value="hospital">🏥 Hospital</option>
+                    <option value="school">🏫 Escuela</option>
+                    <option value="church">⛪ Iglesia</option>
+                    <option value="park">🌳 Parque</option>
+                    <option value="police">👮 Policía</option>
+                    <option value="other">📍 Otro</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-success" id="startAddingBtn">
+                <i class="fas fa-plus"></i> Agregar al Mapa
+            </button>
+            
+            <button class="btn" id="cancelAddingBtn" style="display: none;">
+                <i class="fas fa-times"></i> Cancelar
+            </button>
+        </div>
+    </div>
+    
+    <!-- Escala del mapa -->
+    <div class="map-scale">
+        📏 Escala: 1cm = 100m
+    </div>
+    
+    <!-- Mensajes -->
+    <div class="message" id="messageDiv"></div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        class MapaSimple {
+            constructor() {
+                this.map = null;
+                this.markers = [];
+                this.editMode = false;
+                this.addingMode = false;
+                this.storageKey = 'puerres_map_pois_simple';
+                
+                this.init();
+            }
+            
+            init() {
+                this.initMap();
+                this.loadPOIs();
+                this.setupEventListeners();
+                this.showMessage('info', 'Mapa cargado. Haz clic en el botón de edición para agregar puntos.');
+            }
+            
+            initMap() {
+                // Crear mapa centrado en Puerres
+                this.map = L.map('map').setView([0.8832, -77.504], 16);
+                
+                // Agregar capa de OpenStreetMap
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(this.map);
+            }
+            
+            setupEventListeners() {
+                // Botón de edición
+                document.getElementById('editModeBtn').addEventListener('click', () => {
+                    this.toggleEditMode();
+                });
+                
+                // Cerrar panel
+                document.getElementById('closeEditPanel').addEventListener('click', () => {
+                    this.closeEditPanel();
+                });
+                
+                // Agregar POI
+                document.getElementById('startAddingBtn').addEventListener('click', () => {
+                    this.startAddingPOI();
+                });
+                
+                // Cancelar agregar
+                document.getElementById('cancelAddingBtn').addEventListener('click', () => {
+                    this.cancelAddingPOI();
+                });
+                
+                // Click en el mapa para agregar
+                this.map.on('click', (e) => {
+                    if (this.addingMode) {
+                        this.handleMapClickForAdd(e);
+                    }
+                });
+            }
+            
+            toggleEditMode() {
+                this.editMode = !this.editMode;
+                const panel = document.getElementById('editPanel');
+                
+                if (this.editMode) {
+                    panel.classList.add('show');
+                    this.showMessage('info', 'Modo edición activado. Completa el formulario y haz clic en "Agregar al Mapa".');
+                } else {
+                    this.closeEditPanel();
+                }
+            }
+            
+            closeEditPanel() {
+                this.editMode = false;
+                this.addingMode = false;
+                document.getElementById('editPanel').classList.remove('show');
+                document.getElementById('startAddingBtn').style.display = 'inline-block';
+                document.getElementById('cancelAddingBtn').style.display = 'none';
+                this.map.getContainer().style.cursor = '';
+            }
+            
+            startAddingPOI() {
+                const name = document.getElementById('newPoiName').value.trim();
+                
+                if (!name) {
+                    this.showMessage('error', 'El nombre es obligatorio');
+                    return;
+                }
+                
+                this.addingMode = true;
+                document.getElementById('startAddingBtn').style.display = 'none';
+                document.getElementById('cancelAddingBtn').style.display = 'inline-block';
+                
+                this.map.getContainer().style.cursor = 'crosshair';
+                this.showMessage('info', 'Haz clic en el mapa para agregar el punto de interés');
+            }
+            
+            handleMapClickForAdd(e) {
+                const name = document.getElementById('newPoiName').value.trim();
+                const description = document.getElementById('newPoiDescription').value.trim();
+                const whatsapp = document.getElementById('newPoiWhatsapp').value.trim();
+                const type = document.getElementById('newPoiType').value;
+                
+                // Crear nuevo POI
+                const newPOI = {
+                    id: 'poi_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    coords: [e.latlng.lat, e.latlng.lng],
+                    name: name,
+                    description: description,
+                    whatsapp: whatsapp,
+                    type: type,
+                    icon: this.getIconForType(type),
+                    color: this.getColorForType(type)
+                };
+                
+                // Agregar marcador
+                this.addMarker(newPOI);
+                
+                // Limpiar formulario y cerrar
+                this.clearForm();
+                this.closeEditPanel();
+                
+                this.showMessage('success', 'Punto de interés agregado exitosamente');
+            }
+            
+            addMarker(poiData) {
+                const icon = L.divIcon({
+                    html: `<div style="
+                        background: ${poiData.color};
+                        color: white;
+                        border-radius: 50%;
+                        width: 30px;
+                        height: 30px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 14px;
+                        border: 2px solid white;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                    ">${poiData.icon}</div>`,
+                    className: 'custom-div-icon',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                });
+                
+                const marker = L.marker(poiData.coords, { icon: icon }).addTo(this.map);
+                
+                // Popup
+                const popupContent = `
+                    <div style="text-align: center; min-width: 200px;">
+                        <h4 style="margin: 0 0 10px 0; color: #333;">${poiData.name}</h4>
+                        ${poiData.description ? `<p style="margin: 5px 0; color: #666;">${poiData.description}</p>` : ''}
+                        ${poiData.whatsapp ? `<p style="margin: 5px 0;"><strong>WhatsApp:</strong> +57 ${poiData.whatsapp}</p>` : ''}
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                
+                // Guardar datos del POI
+                marker.poiData = poiData;
+                this.markers.push(marker);
+                
+                // Guardar en localStorage
+                this.savePOIs();
+                
+                return marker;
+            }
+            
+            getIconForType(type) {
+                const icons = {
+                    hotel: '🏨',
+                    restaurant: '🍽️',
+                    hospital: '🏥',
+                    school: '🏫',
+                    church: '⛪',
+                    park: '🌳',
+                    police: '👮',
+                    other: '📍'
+                };
+                return icons[type] || '📍';
+            }
+            
+            getColorForType(type) {
+                const colors = {
+                    hotel: '#e74c3c',
+                    restaurant: '#f39c12',
+                    hospital: '#e67e22',
+                    school: '#3498db',
+                    church: '#9b59b6',
+                    park: '#27ae60',
+                    police: '#2c3e50',
+                    other: '#667eea'
+                };
+                return colors[type] || '#667eea';
+            }
+            
+            clearForm() {
+                document.getElementById('newPoiName').value = '';
+                document.getElementById('newPoiDescription').value = '';
+                document.getElementById('newPoiWhatsapp').value = '';
+                document.getElementById('newPoiType').value = 'other';
+            }
+            
+            cancelAddingPOI() {
+                this.addingMode = false;
+                document.getElementById('startAddingBtn').style.display = 'inline-block';
+                document.getElementById('cancelAddingBtn').style.display = 'none';
+                this.map.getContainer().style.cursor = '';
+                this.showMessage('info', 'Agregar cancelado');
+            }
+            
+            loadPOIs() {
+                try {
+                    const savedPOIs = localStorage.getItem(this.storageKey);
+                    
+                    if (savedPOIs) {
+                        const pois = JSON.parse(savedPOIs);
+                        console.log('POIs cargados:', pois);
+                        
+                        pois.forEach(poiData => {
+                            this.addMarker(poiData);
+                        });
+                        
+                        this.showMessage('success', `${pois.length} puntos de interés cargados`);
+                    } else {
+                        // Cargar POIs originales de Puerres
+                        this.loadOriginalPOIs();
+                    }
+                } catch (error) {
+                    console.error('Error cargando POIs:', error);
+                    this.loadOriginalPOIs();
+                }
+            }
+            
+            loadOriginalPOIs() {
+                const originalPOIs = [
+                    {
+                        id: 'townhall',
+                        coords: [0.8832, -77.504],
+                        name: 'Alcaldía Municipal',
+                        description: 'Casa de gobierno de Puerres',
+                        whatsapp: '3001234567',
+                        type: 'other',
+                        icon: '🏛️',
+                        color: '#e74c3c'
+                    },
+                    {
+                        id: 'church',
+                        coords: [0.8831, -77.5041],
+                        name: 'Iglesia Principal',
+                        description: 'Templo católico principal',
+                        whatsapp: '3009876543',
+                        type: 'church',
+                        icon: '⛪',
+                        color: '#9b59b6'
+                    },
+                    {
+                        id: 'park',
+                        coords: [0.8833, -77.50415],
+                        name: 'Parque Central',
+                        description: 'Parque principal del municipio',
+                        whatsapp: '3005555555',
+                        type: 'park',
+                        icon: '🌳',
+                        color: '#27ae60'
+                    }
+                ];
+                
+                originalPOIs.forEach(poiData => {
+                    this.addMarker(poiData);
+                });
+                
+                this.savePOIs();
+                this.showMessage('success', 'POIs originales de Puerres cargados');
+            }
+            
+            savePOIs() {
+                try {
+                    const pois = this.markers.map(marker => marker.poiData);
+                    localStorage.setItem(this.storageKey, JSON.stringify(pois));
+                    console.log('POIs guardados en localStorage');
+                } catch (error) {
+                    console.error('Error guardando POIs:', error);
+                }
+            }
+            
+            showMessage(type, text) {
+                const messageDiv = document.getElementById('messageDiv');
+                messageDiv.className = `message ${type}`;
+                messageDiv.textContent = text;
+                messageDiv.classList.add('show');
+                
+                setTimeout(() => {
+                    messageDiv.classList.remove('show');
+                }, 3000);
+            }
+        }
+        
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', () => {
+            new MapaSimple();
+        });
+    </script>
+</body>
+</html>

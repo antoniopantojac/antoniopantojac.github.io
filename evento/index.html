@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mapa interactivo de Puerres - CIASE">
+    <meta name="theme-color" content="#2c3e50">
+    
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>Mapa de Puerres - CIASE</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Cargando mapa...</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Map Container -->
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <!-- Map Controls -->
+            <div class="map-controls">
+                <!-- Install Button -->
+                <button id="installBtn" class="control-btn" style="display: none;">
+                    <i class="fas fa-download"></i>
+                    <span>Instalar</span>
+                </button>
+                
+                <!-- Clear Cache Button -->
+                <button id="clearCacheBtn" class="control-btn">
+                    <i class="fas fa-trash"></i>
+                    <span>Limpiar Caché</span>
+                </button>
+            </div>
+            
+            <!-- Map Type Selector -->
+            <div class="map-type-selector">
+                <button id="mapTypeBtn" class="control-btn">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Tipo de Mapa</span>
+                </button>
+                <div id="mapTypeMenu" class="map-type-menu">
+                    <div class="map-type-option" data-type="osm">
+                        <i class="fas fa-map"></i>
+                        <span>Estándar</span>
+                    </div>
+                    <div class="map-type-option" data-type="satellite">
+                        <i class="fas fa-satellite"></i>
+                        <span>Satélite</span>
+                    </div>
+                    <div class="map-type-option" data-type="terrain">
+                        <i class="fas fa-mountain"></i>
+                        <span>Terreno</span>
+                    </div>
+                    <div class="map-type-option" data-type="dark">
+                        <i class="fas fa-moon"></i>
+                        <span>Oscuro</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Edit Controls -->
+            <div class="edit-controls">
+                <button id="editModeBtn" class="edit-btn">
+                    <i class="fas fa-edit"></i>
+                    <span>Editar</span>
+                </button>
+            </div>
+            
+            <!-- Simple Scale -->
+            <div class="simple-scale">
+                <span>≈ 100m</span>
+            </div>
+            
+            <!-- Online Status -->
+            <div id="onlineStatus" class="online-status">
+                <i class="fas fa-wifi"></i>
+                <span>En línea</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit Panel -->
+    <div id="editPanel" class="edit-panel">
+        <div class="edit-panel-header">
+            <h3>Panel de Administración</h3>
+            <div class="panel-controls">
+                <button id="minimizePanel" class="minimize-btn">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button id="closeEditPanel" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="edit-panel-content">
+            <!-- Tabs -->
+            <div class="edit-tabs">
+                <button class="tab-btn active" data-tab="edit">
+                    <i class="fas fa-edit"></i>
+                    <span>Editar</span>
+                </button>
+                <button class="tab-btn" data-tab="add">
+                    <i class="fas fa-plus"></i>
+                    <span>Agregar</span>
+                </button>
+                <button class="tab-btn" data-tab="manage">
+                    <i class="fas fa-list"></i>
+                    <span>Gestionar</span>
+                </button>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Edit Tab -->
+                <div id="editTab" class="tab-panel active">
+                    <div class="poi-edit-section">
+                        <h4>Editar Punto de Interés</h4>
+                        
+                        <div class="form-group">
+                            <label for="poiName">Nombre:</label>
+                            <input type="text" id="poiName" placeholder="Nombre del lugar">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="poiDescription">Descripción:</label>
+                            <textarea id="poiDescription" placeholder="Descripción del lugar"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="poiWhatsapp">WhatsApp:</label>
+                            <input type="text" id="poiWhatsapp" placeholder="+57 300 123 4567">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="poiLat">Latitud:</label>
+                            <input type="number" id="poiLat" step="any" placeholder="0.000000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="poiLng">Longitud:</label>
+                            <input type="number" id="poiLng" step="any" placeholder="0.000000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Icono:</label>
+                            <div id="iconPreview" class="icon-preview">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <button id="selectIconBtn" class="btn-secondary">
+                                <i class="fas fa-palette"></i>
+                                Seleccionar Icono
+                            </button>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button id="updatePOI" class="btn-primary">
+                                <i class="fas fa-save"></i>
+                                Actualizar
+                            </button>
+                            <button id="deletePOI" class="btn-danger">
+                                <i class="fas fa-trash"></i>
+                                Eliminar
+                            </button>
+                            <button id="cancelEdit" class="btn-secondary">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Add Tab -->
+                <div id="addTab" class="tab-panel">
+                    <div class="add-form">
+                        <h4>Agregar Nuevo Punto de Interés</h4>
+                        
+                        <div class="form-group">
+                            <label for="newPoiName">Nombre:</label>
+                            <input type="text" id="newPoiName" placeholder="Nombre del lugar" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPoiDescription">Descripción:</label>
+                            <textarea id="newPoiDescription" placeholder="Descripción del lugar"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPoiWhatsapp">WhatsApp:</label>
+                            <input type="text" id="newPoiWhatsapp" placeholder="+57 300 123 4567">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPoiType">Tipo:</label>
+                            <select id="newPoiType">
+                                <optgroup label="Alojamiento">
+                                    <option value="hotel">Hotel</option>
+                                    <option value="hostel">Hostal</option>
+                                    <option value="camping">Camping</option>
+                                </optgroup>
+                                <optgroup label="Restaurantes">
+                                    <option value="restaurant">Restaurante</option>
+                                    <option value="cafe">Café</option>
+                                    <option value="bar">Bar</option>
+                                    <option value="fast_food">Comida Rápida</option>
+                                </optgroup>
+                                <optgroup label="Servicios">
+                                    <option value="bank">Banco</option>
+                                    <option value="gas_station">Gasolinera</option>
+                                    <option value="pharmacy">Farmacia</option>
+                                    <option value="hospital">Hospital</option>
+                                    <option value="police">Policía</option>
+                                </optgroup>
+                                <optgroup label="Otros">
+                                    <option value="shop">Tienda</option>
+                                    <option value="park">Parque</option>
+                                    <option value="church">Iglesia</option>
+                                    <option value="school">Escuela</option>
+                                    <option value="other">Otro</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="useCoordinates">
+                                Agregar por coordenadas
+                            </label>
+                        </div>
+                        
+                        <div id="coordinatesSection" class="coordinates-section" style="display: none;">
+                            <div class="form-group">
+                                <label for="newPoiLat">Latitud:</label>
+                                <input type="number" id="newPoiLat" step="any" placeholder="0.000000">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="newPoiLng">Longitud:</label>
+                                <input type="number" id="newPoiLng" step="any" placeholder="0.000000">
+                            </div>
+                            
+                            <button id="addNewPOICoords" class="btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Agregar por Coordenadas
+                            </button>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button id="startAddingPOI" class="btn-primary">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Agregar en el Mapa
+                            </button>
+                            <button id="cancelAddingPOI" class="btn-secondary">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Manage Tab -->
+                <div id="manageTab" class="tab-panel">
+                    <div class="manage-section">
+                        <h4>Gestionar Puntos de Interés</h4>
+                        
+                        <div class="poi-list" id="poiList">
+                            <!-- POIs will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Autenticación</h3>
+                <button id="closeAuthModal" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="authForm">
+                    <div class="form-group">
+                        <label for="username">Usuario:</label>
+                        <input type="text" id="username" placeholder="Usuario" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input type="password" id="password" placeholder="Contraseña" required>
+                    </div>
+                    
+                    <div id="authError" class="error-message" style="display: none;">
+                        Usuario o contraseña incorrectos
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Ingresar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Icon Gallery Modal -->
+    <div id="iconGallery" class="modal">
+        <div class="modal-content icon-gallery-content">
+            <div class="modal-header">
+                <h3>Seleccionar Icono</h3>
+                <button id="closeIconGallery" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="icon-grid" id="iconGrid">
+                    <!-- Icons will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 R.I Gran Tescual - CIASE | Adm. antoniopantojac@gmail.com</p>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Dynamic Script Loading -->
+    <script>
+        // Generate timestamp to avoid cache
+        const timestamp = Date.now();
+        document.write('<script src="js/map.js?v=' + timestamp + '"><\/script>');
+        document.write('<script src="js/app.js?v=' + timestamp + '"><\/script>');
+    </script>
+</body>
+</html>
