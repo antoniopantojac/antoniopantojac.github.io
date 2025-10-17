@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple - Guardado localStorage</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Simple - Guardado localStorage</h1>
+    
+    <div class="test-section">
+        <h3>🔍 Verificar localStorage</h3>
+        <button onclick="verificarLocalStorage()">Verificar localStorage</button>
+        <button onclick="limpiarTodo()">Limpiar Todo</button>
+        <div id="verificacion"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>💾 Test Guardado Simple</h3>
+        <button onclick="guardarDatoSimple()">Guardar Dato Simple</button>
+        <button onclick="guardarArraySimple()">Guardar Array Simple</button>
+        <button onclick="guardarPOISimple()">Guardar POI Simple</button>
+        <div id="guardado"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>📖 Test Lectura Simple</h3>
+        <button onclick="leerDatoSimple()">Leer Dato Simple</button>
+        <button onclick="leerArraySimple()">Leer Array Simple</button>
+        <button onclick="leerPOISimple()">Leer POI Simple</button>
+        <div id="lectura"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>🔄 Test Ciclo Completo</h3>
+        <button onclick="testCicloCompleto()">Test Ciclo Completo</button>
+        <div id="ciclo"></div>
+    </div>
+    
+    <script>
+        const STORAGE_KEY = 'puerres_map_pois';
+        
+        function verificarLocalStorage() {
+            const verificacion = document.getElementById('verificacion');
+            
+            try {
+                // Verificar si localStorage está disponible
+                if (typeof(Storage) === "undefined") {
+                    verificacion.innerHTML = '<div class="error"><h4>❌ localStorage no está disponible</h4></div>';
+                    return;
+                }
+                
+                // Verificar si podemos escribir y leer
+                const testKey = 'test_' + Date.now();
+                const testValue = 'test_value_' + Math.random();
+                
+                localStorage.setItem(testKey, testValue);
+                const retrieved = localStorage.getItem(testKey);
+                localStorage.removeItem(testKey);
+                
+                if (retrieved === testValue) {
+                    verificacion.innerHTML = '<div class="success"><h4>✅ localStorage funciona correctamente</h4></div>';
+                } else {
+                    verificacion.innerHTML = '<div class="error"><h4>❌ localStorage no funciona correctamente</h4></div>';
+                }
+                
+                // Mostrar datos actuales
+                const datosActuales = localStorage.getItem(STORAGE_KEY);
+                verificacion.innerHTML += `
+                    <div class="info">
+                        <h4>📦 Datos actuales en ${STORAGE_KEY}:</h4>
+                        <pre>${datosActuales || 'No hay datos'}</pre>
+                    </div>
+                `;
+                
+            } catch (error) {
+                verificacion.innerHTML = `<div class="error"><h4>❌ Error: ${error.message}</h4></div>`;
+            }
+        }
+        
+        function guardarDatoSimple() {
+            const guardado = document.getElementById('guardado');
+            
+            try {
+                const testData = {
+                    nombre: 'Test Simple',
+                    fecha: new Date().toISOString(),
+                    numero: Math.random()
+                };
+                
+                localStorage.setItem('test_simple', JSON.stringify(testData));
+                guardado.innerHTML = '<div class="success"><h4>✅ Dato simple guardado correctamente</h4></div>';
+                
+            } catch (error) {
+                guardado.innerHTML = `<div class="error"><h4>❌ Error guardando dato simple: ${error.message}</h4></div>`;
+            }
+        }
+        
+        function guardarArraySimple() {
+            const guardado = document.getElementById('guardado');
+            
+            try {
+                const testArray = [
+                    { id: 1, name: 'Item 1' },
+                    { id: 2, name: 'Item 2' },
+                    { id: 3, name: 'Item 3' }
+                ];
+                
+                localStorage.setItem('test_array', JSON.stringify(testArray));
+                guardado.innerHTML = '<div class="success"><h4>✅ Array simple guardado correctamente</h4></div>';
+                
+            } catch (error) {
+                guardado.innerHTML = `<div class="error"><h4>❌ Error guardando array simple: ${error.message}</h4></div>`;
+            }
+        }
+        
+        function guardarPOISimple() {
+            const guardado = document.getElementById('guardado');
+            
+            try {
+                const testPOI = {
+                    id: 'poi_test_' + Date.now(),
+                    name: 'POI de Prueba',
+                    description: 'Descripción de prueba',
+                    coords: [0.883000, -77.504000],
+                    whatsapp: '3009999999',
+                    icon: 'fas fa-map-marker-alt',
+                    color: '#ff0000',
+                    type: 'other',
+                    edited: true
+                };
+                
+                // Simular el proceso de guardado de la app
+                const existingData = localStorage.getItem(STORAGE_KEY);
+                let pois = existingData ? JSON.parse(existingData) : [];
+                
+                // Agregar nuevo POI
+                pois.push(testPOI);
+                
+                // Guardar
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(pois));
+                
+                guardado.innerHTML = '<div class="success"><h4>✅ POI simple guardado correctamente</h4></div>';
+                
+            } catch (error) {
+                guardado.innerHTML = `<div class="error"><h4>❌ Error guardando POI simple: ${error.message}</h4></div>`;
+            }
+        }
+        
+        function leerDatoSimple() {
+            const lectura = document.getElementById('lectura');
+            
+            try {
+                const data = localStorage.getItem('test_simple');
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    lectura.innerHTML = `
+                        <div class="success">
+                            <h4>✅ Dato simple leído correctamente</h4>
+                            <pre>${JSON.stringify(parsed, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    lectura.innerHTML = '<div class="error"><h4>❌ No hay dato simple guardado</h4></div>';
+                }
+            } catch (error) {
+                lectura.innerHTML = `<div class="error"><h4>❌ Error leyendo dato simple: ${error.message}</h4></div>`;
+            }
+        }
+        
+        function leerArraySimple() {
+            const lectura = document.getElementById('lectura');
+            
+            try {
+                const data = localStorage.getItem('test_array');
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    lectura.innerHTML = `
+                        <div class="success">
+                            <h4>✅ Array simple leído correctamente</h4>
+                            <pre>${JSON.stringify(parsed, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    lectura.innerHTML = '<div class="error"><h4>❌ No hay array simple guardado</h4></div>';
+                }
+            } catch (error) {
+                lectura.innerHTML = `<div class="error"><h4>❌ Error leyendo array simple: ${error.message}</h4></div>`;
+            }
+        }
+        
+        function leerPOISimple() {
+            const lectura = document.getElementById('lectura');
+            
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    lectura.innerHTML = `
+                        <div class="success">
+                            <h4>✅ POIs leídos correctamente</h4>
+                            <p>Cantidad: ${parsed.length}</p>
+                            <pre>${JSON.stringify(parsed, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    lectura.innerHTML = '<div class="error"><h4>❌ No hay POIs guardados</h4></div>';
+                }
+            } catch (error) {
+                lectura.innerHTML = `<div class="error"><h4>❌ Error leyendo POIs: ${error.message}</h4></div>`;
+            }
+        }
+        
+        function testCicloCompleto() {
+            const ciclo = document.getElementById('ciclo');
+            ciclo.innerHTML = '<h4>🔄 Ejecutando test de ciclo completo...</h4>';
+            
+            try {
+                // 1. Limpiar
+                localStorage.removeItem(STORAGE_KEY);
+                
+                // 2. Crear POI
+                const testPOI = {
+                    id: 'poi_ciclo_' + Date.now(),
+                    name: 'POI Ciclo Completo',
+                    description: 'Test de ciclo completo',
+                    coords: [0.883000, -77.504000],
+                    whatsapp: '3008888888',
+                    icon: 'fas fa-star',
+                    color: '#00ff00',
+                    type: 'other',
+                    edited: true
+                };
+                
+                // 3. Guardar
+                localStorage.setItem(STORAGE_KEY, JSON.stringify([testPOI]));
+                
+                // 4. Leer
+                const saved = localStorage.getItem(STORAGE_KEY);
+                const parsed = JSON.parse(saved);
+                
+                // 5. Verificar
+                if (parsed.length === 1 && parsed[0].name === testPOI.name) {
+                    ciclo.innerHTML = `
+                        <div class="success">
+                            <h4>✅ Ciclo completo exitoso</h4>
+                            <p>POI guardado y leído correctamente</p>
+                            <pre>${JSON.stringify(parsed, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    ciclo.innerHTML = '<div class="error"><h4>❌ Ciclo completo falló - datos no coinciden</h4></div>';
+                }
+                
+            } catch (error) {
+                ciclo.innerHTML = `<div class="error"><h4>❌ Error en ciclo completo: ${error.message}</h4></div>`;
+            }
+        }
+        
+        function limpiarTodo() {
+            localStorage.clear();
+            document.getElementById('verificacion').innerHTML = '<div class="info"><h4>✅ localStorage limpiado</h4></div>';
+            document.getElementById('guardado').innerHTML = '';
+            document.getElementById('lectura').innerHTML = '';
+            document.getElementById('ciclo').innerHTML = '';
+        }
+        
+        // Verificar automáticamente al cargar
+        window.onload = verificarLocalStorage;
+    </script>
+</body>
+</html>

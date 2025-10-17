@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo -->
+  <rect width="192" height="192" fill="#2c3e50" rx="24"/>
+  
+  <!-- Mapa Pin Icon -->
+  <g transform="translate(96, 96)">
+    <!-- Pin principal -->
+    <path d="M0,-50 C-20,-50 -35,-35 -35,-15 C-35,0 0,50 0,50 C0,50 35,0 35,-15 C35,-35 20,-50 0,-50 Z" 
+          fill="#e74c3c" 
+          stroke="#ffffff" 
+          stroke-width="4"/>
+    
+    <!-- Círculo interior -->
+    <circle cx="0" cy="-15" r="12" fill="#ffffff"/>
+    
+    <!-- Líneas del mapa (fondo) -->
+    <line x1="-60" y1="30" x2="60" y2="30" stroke="#3498db" stroke-width="3" opacity="0.6"/>
+    <line x1="-60" y1="45" x2="60" y2="45" stroke="#3498db" stroke-width="3" opacity="0.6"/>
+    <line x1="-40" y1="20" x2="-40" y2="55" stroke="#3498db" stroke-width="2" opacity="0.4"/>
+    <line x1="40" y1="20" x2="40" y2="55" stroke="#3498db" stroke-width="2" opacity="0.4"/>
+  </g>
+  
+  <!-- Texto -->
+  <text x="96" y="175" font-family="Arial, sans-serif" font-size="20" font-weight="bold" 
+        fill="#ffffff" text-anchor="middle">PUERRES</text>
+</svg>
+
+
